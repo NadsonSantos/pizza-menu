@@ -1,0 +1,1 @@
+neste repositorio, iremos desenvolver um: PWA que funciona como cardápio digital de uma pizzaria, permitindo ao cliente: navegar pelo cardápio, montar um carrinho de pedidos e enviar o pedido finalizado via WhatsApp diretamente para a pizzaria.
