@@ -1,0 +1,51 @@
+{
+  "pizzaria": {
+    "nome": "Pizza do Bairro",
+    "whatsapp": "5511999999999",
+    "taxa_entrega": 5.00
+  },
+  "categorias": [
+    {
+      "id": "tradicionais",
+      "nome": "Tradicionais Simples",
+      "tipo": "pizza",
+      "preco": 30.00,
+      "sabores": [
+        { "id": "mussarela", "nome": "Mussarela", "descricao": "Queijo mussarela e tomate", "imagem": "" },
+        { "id": "calabresa", "nome": "Calabresa", "descricao": "Calabresa fatiada com cebola", "imagem": "" },
+        { "id": "marguerita", "nome": "Marguerita", "descricao": "Mussarela, tomate e manjericão", "imagem": "" },
+        { "id": "napolitana", "nome": "Napolitana", "descricao": "Queijo, tomate, parmesão e orégano", "imagem": "" }
+      ]
+    },
+    {
+      "id": "especiais",
+      "nome": "Especiais",
+      "tipo": "pizza",
+      "preco": 35.00,
+      "sabores": [
+        { "id": "portuguesa", "nome": "Portuguesa", "descricao": "Presunto, ovo, cebola e ervilha", "imagem": "" },
+        { "id": "frango-catupiry", "nome": "Frango com Catupiry", "descricao": "Frango desfiado com catupiry", "imagem": "" },
+        { "id": "quatro-queijos", "nome": "Quatro Queijos", "descricao": "Mussarela, provolone, parmesão e gorgonzola", "imagem": "" },
+        { "id": "atum", "nome": "Atum Especial", "descricao": "Atum com cebola e azeitona", "imagem": "" }
+      ]
+    },
+    {
+      "id": "sensacionais",
+      "nome": "Sensacionais",
+      "tipo": "pizza",
+      "preco": 40.00,
+      "sabores": [
+        { "id": "bacon-cheddar", "nome": "Bacon com Cheddar", "descricao": "Bacon crocante com cheddar cremoso", "imagem": "" },
+        { "id": "camarao", "nome": "Camarão Especial", "descricao": "Camarão com molho especial da casa", "imagem": "" },
+        { "id": "chocolate", "nome": "Chocolate com Morango", "descricao": "Chocolate ao leite com morangos frescos", "imagem": "" },
+        { "id": "filé", "nome": "Filé Mignon", "descricao": "Filé mignon ao molho madeira com catupiry", "imagem": "" }
+      ]
+    }
+  ],
+  "bebidas": [
+    { "id": "pepsi", "nome": "Pepsi Lata 350ml", "preco": 8.00, "imagem": "" },
+    { "id": "guarana", "nome": "Guaraná Antarctica Lata 350ml", "preco": 7.50, "imagem": "" },
+    { "id": "coca-cola", "nome": "Coca-Cola Lata 350ml", "preco": 8.50, "imagem": "" },
+    { "id": "agua", "nome": "Água Mineral 500ml", "preco": 4.00, "imagem": "" }
+  ]
+}
