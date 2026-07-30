@@ -1,21 +1,23 @@
-import { Categoria, Sabor } from '../types/menu';
+import { Sabor } from '../types/menu';
 import FlavorSelector from './FlavorSelector';
 import { useCart } from '../context/CartContext';
 import { useMenu } from '../context/MenuContext';
 import { calcularPrecoPizza } from '../utils/pricing';
 
 interface Props {
-  categoria: Categoria;
   onClose: () => void;
 }
 
-export default function PizzaBuilder({ categoria, onClose }: Props) {
+export default function PizzaBuilder({ onClose }: Props) {
   const { addItem } = useCart();
   const { menu } = useMenu();
 
   if (!menu) return null;
 
-  const saboresDaCategoria = menu.sabores.filter(s => s.categoria_id === categoria.id);
+  const grupos = menu.categorias.map(cat => ({
+    categoria: cat,
+    sabores: menu.sabores.filter(s => s.categoria_id === cat.id),
+  }));
 
   const handleConfirm = (sabores: Sabor[], observacao: string) => {
     const nome = sabores.length === 1
@@ -43,9 +45,8 @@ export default function PizzaBuilder({ categoria, onClose }: Props) {
           <h2 className="text-lg font-bold text-gray-900">Montar Pizza</h2>
           <button type="button" onClick={onClose} className="text-gray-400 hover:text-gray-600 text-xl cursor-pointer">&times;</button>
         </div>
-        <p className="text-xs text-gray-500 mb-3">Categoria: <span className="font-medium text-gray-700">{categoria.nome}</span> — a partir de R$ {categoria.preco.toFixed(2).replace('.', ',')}</p>
         <FlavorSelector
-          sabores={saboresDaCategoria}
+          grupos={grupos}
           categorias={menu.categorias}
           onConfirm={handleConfirm}
         />
