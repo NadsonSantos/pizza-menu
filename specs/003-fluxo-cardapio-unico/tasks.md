@@ -22,7 +22,7 @@
 
 ### Tasks
 
-- [ ] T060 [P] Alterar `nome` da categoria `"tradicionais"` para `"Simples"` em `public/menu.json` — apenas o campo `nome` muda, o `id` permanece `"tradicionais"`
+- [x] T060 [P] Alterar `nome` da categoria `"tradicionais"` para `"Simples"` em `public/menu.json` — apenas o campo `nome` muda, o `id` permanece `"tradicionais"`
 
 ### 🛑 Phase 1 Validation
 
@@ -41,13 +41,13 @@ Navegar → sabores da categoria "Simples" aparecem corretamente
 
 ### Tasks
 
-- [ ] T061 Reescrever `src/pages/MenuPage.tsx`:
+- [x] T061 Reescrever `src/pages/MenuPage.tsx`:
   - Categorias viram `<section id="cat-{id}">` com título + grid de sabores
   - Sticky nav com `position: sticky`, `top-0`, `z-50`
   - Cada link do nav chama `document.getElementById('cat-{id}').scrollIntoView({ behavior: 'smooth' })`
   - `IntersectionObserver` com `rootMargin: '-40% 0px -55% 0px'` destaca link ativo
   - Bebidas mantidas como seção final
-- [ ] T062 [P] Remover tabs `activeTab`/`setActiveTab` — toda a lógica de alternância por abas não é mais necessária
+- [x] T062 [P] Remover tabs `activeTab`/`setActiveTab` — toda a lógica de alternância por abas não é mais necessária
 
 ### 🛑 Phase 2 Validation
 
@@ -68,11 +68,11 @@ Sticky nav permanece fixo no topo durante scroll
 
 ### Tasks
 
-- [ ] T063 [P] Modificar `src/components/PizzaBuilder.tsx`:
+- [x] T063 [P] Modificar `src/components/PizzaBuilder.tsx`:
   - Remover `categoria: Categoria` da Props, receber apenas `onClose`
   - Obter `menu` via `useMenu()`
   - Passar `menu.categorias` e `menu.sabores` para `FlavorSelector`
-- [ ] T064 [P] Remover `setPizzaBuilderCat` do `MenuPage.tsx` — em vez de abrir PizzaBuilder por categoria, ter UM único botão "Montar Pizza"
+- [x] T064 [P] Remover `setPizzaBuilderCat` do `MenuPage.tsx` — em vez de abrir PizzaBuilder por categoria, ter UM único botão "Montar Pizza"
 
 ### 🛑 Phase 3 Validation
 
@@ -91,12 +91,12 @@ Verificar que os sabores estão agrupados visualmente
 
 ### Tasks
 
-- [ ] T065 [P] Modificar `src/components/FlavorSelector.tsx`:
+- [x] T065 [P] Modificar `src/components/FlavorSelector.tsx`:
   - Receber `grupos: { categoria: Categoria; sabores: Sabor[] }[]` em vez de `sabores: Sabor[]`
   - Renderizar cada grupo com cabeçalho (nome da categoria + preço)
   - Cada card de sabor exibe badge com nome da categoria
   - Manter limite de 3 sabores e acréscimo de R$5
-- [ ] T066 [P] Adicionar helper `getCategoriaNome(id: string): string` em `src/context/MenuContext.tsx` para components exibirem badge
+- [x] T066 [P] Adicionar helper `getCategoriaNome(id: string): string` em `src/context/MenuContext.tsx` para components exibirem badge
 
 ### 🛑 Phase 4 Validation
 
@@ -118,9 +118,9 @@ Observação e demais campos funcionando
 
 ### Tasks
 
-- [ ] T067 Build: `npx tsc --noEmit && npm run build`
-- [ ] T068 Verificar regressão: carrinho, checkout, WhatsApp, PWA — nada quebrado
-- [ ] T069 Verificar SC-001 a SC-006 contra a spec
+- [x] T067 Build: `npx tsc --noEmit && npm run build`
+- [x] T068 Verificar regressão: carrinho, checkout, WhatsApp, PWA — nada quebrado
+- [x] T069 Verificar SC-001 a SC-006 contra a spec
 
 ### 🛑 Phase 5 Validation
 
