@@ -13,12 +13,9 @@ export default function MenuPage() {
   const [pizzaBuilderOpen, setPizzaBuilderOpen] = useState(false);
   const sectionRefs = useRef<Map<string, HTMLElement>>(new Map());
 
-  if (loading) return <LoadingSkeleton />;
-  if (error) return <ErrorBox message={error} />;
-  if (!menu) return null;
-
-  // IntersectionObserver for active category detection
+  // MUST be before early returns to keep hook order stable
   useEffect(() => {
+    if (!menu) return;
     const observer = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
@@ -33,6 +30,10 @@ export default function MenuPage() {
     sectionRefs.current.forEach((el) => observer.observe(el));
     return () => observer.disconnect();
   }, [menu]);
+
+  if (loading) return <LoadingSkeleton />;
+  if (error) return <ErrorBox message={error} />;
+  if (!menu) return null;
 
   const scrollTo = (id: string) => {
     document.getElementById(`cat-${id}`)?.scrollIntoView({ behavior: 'smooth' });
