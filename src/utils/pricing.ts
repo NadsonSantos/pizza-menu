@@ -1,6 +1,6 @@
-import { Sabor } from '../types/menu';
+import { Sabor, Categoria } from '../types/menu';
 
-export function calcularPrecoPizza(sabores: Sabor[], categoriaPrecos: Map<string, number>): {
+export function calcularPrecoPizza(sabores: Sabor[], categorias: Categoria[]): {
   precoBase: number;
   acrescimo: number;
   total: number;
@@ -9,7 +9,8 @@ export function calcularPrecoPizza(sabores: Sabor[], categoriaPrecos: Map<string
     throw new Error('Pizza deve ter de 1 a 3 sabores');
   }
 
-  const precosSabores = sabores.map(s => categoriaPrecos.get(s.categoria_id) ?? 0);
+  const precos = new Map(categorias.map(c => [c.id, c.preco]));
+  const precosSabores = sabores.map(s => precos.get(s.categoria_id) ?? 0);
   const precoBase = Math.max(...precosSabores);
   const acrescimo = sabores.length === 3 ? 5 : 0;
   const total = precoBase + acrescimo;

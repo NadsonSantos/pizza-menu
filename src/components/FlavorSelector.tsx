@@ -1,15 +1,15 @@
 import { useState } from 'react';
-import { Sabor } from '../types/menu';
+import { Sabor, Categoria } from '../types/menu';
 import { calcularPrecoPizza, formatCurrency } from '../utils/pricing';
 import PizzaCard from './PizzaCard';
 
 interface Props {
   sabores: Sabor[];
-  categoriaPrecos: Map<string, number>;
+  categorias: Categoria[];
   onConfirm: (sabores: Sabor[], observacao: string) => void;
 }
 
-export default function FlavorSelector({ sabores, categoriaPrecos, onConfirm }: Props) {
+export default function FlavorSelector({ sabores, categorias, onConfirm }: Props) {
   const [selected, setSelected] = useState<Sabor[]>([]);
   const [observacao, setObservacao] = useState('');
 
@@ -23,7 +23,7 @@ export default function FlavorSelector({ sabores, categoriaPrecos, onConfirm }: 
     }
   };
 
-  const precoInfo = selected.length > 0 ? calcularPrecoPizza(selected, categoriaPrecos) : null;
+  const precoInfo = selected.length > 0 ? calcularPrecoPizza(selected, categorias) : null;
 
   return (
     <div className="space-y-3">

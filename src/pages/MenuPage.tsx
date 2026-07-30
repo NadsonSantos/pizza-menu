@@ -3,7 +3,7 @@ import { useMenu } from '../context/MenuContext';
 import { useCart } from '../context/CartContext';
 import PizzaBuilder from '../components/PizzaBuilder';
 import DrinkCard from '../components/DrinkCard';
-import { Categoria, Bebida } from '../types/menu';
+import { Categoria, Bebida, Sabor } from '../types/menu';
 import { formatCurrency } from '../utils/pricing';
 
 export default function MenuPage() {
@@ -51,8 +51,9 @@ export default function MenuPage() {
       ) : (
         <PizzaSection
           categoria={menu.categorias.find(c => c.id === selected)!}
+          sabores={menu.sabores.filter(s => s.categoria_id === selected)}
           onBuild={setPizzaBuilderCat}
-        />
+        /> 
       )}
 
       {/* Pizza Builder Modal */}
@@ -63,7 +64,7 @@ export default function MenuPage() {
   );
 }
 
-function PizzaSection({ categoria, onBuild }: { categoria: Categoria; onBuild: (c: Categoria) => void }) {
+function PizzaSection({ categoria, sabores, onBuild }: { categoria: Categoria; sabores: Sabor[]; onBuild: (c: Categoria) => void }) {
   return (
     <div>
       <div className="flex items-center justify-between mb-3">
@@ -71,7 +72,7 @@ function PizzaSection({ categoria, onBuild }: { categoria: Categoria; onBuild: (
         <span className="text-sm font-bold text-red-600">{formatCurrency(categoria.preco)}</span>
       </div>
       <div className="grid grid-cols-2 gap-3">
-        {categoria.sabores.map(s => (
+        {sabores.map(s => (
           <button
             key={s.id}
             type="button"

@@ -1,6 +1,7 @@
 export interface MenuData {
   pizzaria: PizzariaInfo;
   categorias: Categoria[];
+  sabores: Sabor[];
   bebidas: Bebida[];
 }
 
@@ -13,9 +14,7 @@ export interface PizzariaInfo {
 export interface Categoria {
   id: string;
   nome: string;
-  tipo: 'pizza';
   preco: number;
-  sabores: Sabor[];
 }
 
 export interface Sabor {

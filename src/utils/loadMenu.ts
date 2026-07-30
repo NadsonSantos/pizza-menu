@@ -28,11 +28,23 @@ function validateMenu(data: MenuData): void {
     throw new Error('menu.json: o campo "categorias" está vazio ou ausente.');
   }
   for (const cat of data.categorias) {
-    if (!Array.isArray(cat.sabores) || cat.sabores.length === 0) {
-      throw new Error(`menu.json: a categoria "${cat.nome}" não tem sabores.`);
-    }
     if (typeof cat.preco !== 'number' || cat.preco <= 0) {
       throw new Error(`menu.json: preço inválido na categoria "${cat.nome}".`);
+    }
+  }
+  if (!Array.isArray(data.sabores) || data.sabores.length === 0) {
+    throw new Error('menu.json: o campo "sabores" está vazio ou ausente.');
+  }
+  const catIds = new Set(data.categorias.map(c => c.id));
+  for (const sabor of data.sabores) {
+    if (!sabor.categoria_id) {
+      throw new Error(`menu.json: sabor "${sabor.nome}" não tem categoria definida. Adicione "categoria_id" ao sabor.`);
+    }
+    if (!catIds.has(sabor.categoria_id)) {
+      throw new Error(`menu.json: sabor "${sabor.nome}" referencia categoria "${sabor.categoria_id}" que não existe.`);
+    }
+    if ('preco' in sabor) {
+      throw new Error(`menu.json: sabor "${sabor.nome}" tem campo "preco" — preços devem ficar nas categorias.`);
     }
   }
 }

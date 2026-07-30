@@ -1,7 +1,8 @@
-import { Categoria } from '../types/menu';
+import { Categoria, Sabor } from '../types/menu';
 import FlavorSelector from './FlavorSelector';
 import { useCart } from '../context/CartContext';
 import { useMenu } from '../context/MenuContext';
+import { calcularPrecoPizza } from '../utils/pricing';
 
 interface Props {
   categoria: Categoria;
@@ -12,22 +13,20 @@ export default function PizzaBuilder({ categoria, onClose }: Props) {
   const { addItem } = useCart();
   const { menu } = useMenu();
 
-  const categoriaPrecos = new Map(
-    menu?.categorias.map(c => [c.id, c.preco]) ?? []
-  );
+  if (!menu) return null;
 
-  const handleConfirm = (sabores: typeof categoria.sabores, observacao: string) => {
+  const saboresDaCategoria = menu.sabores.filter(s => s.categoria_id === categoria.id);
+
+  const handleConfirm = (sabores: Sabor[], observacao: string) => {
     const nome = sabores.length === 1
       ? sabores[0].nome
       : sabores.map(s => s.nome).join(' + ');
+    const { total } = calcularPrecoPizza(sabores, menu.categorias);
     addItem({
       tipo: 'pizza',
       nome: `Pizza Grande (${nome})`,
       sabores,
-      precoUnitario: (() => {
-        const precos = sabores.map(s => categoriaPrecos.get(s.categoria_id) ?? 0);
-        return Math.max(...precos) + (sabores.length === 3 ? 5 : 0);
-      })(),
+      precoUnitario: total,
       quantidade: 1,
       observacao,
     });
@@ -46,8 +45,8 @@ export default function PizzaBuilder({ categoria, onClose }: Props) {
         </div>
         <p className="text-xs text-gray-500 mb-3">Categoria: <span className="font-medium text-gray-700">{categoria.nome}</span> — a partir de R$ {categoria.preco.toFixed(2).replace('.', ',')}</p>
         <FlavorSelector
-          sabores={categoria.sabores.map(s => ({ ...s, categoria_id: categoria.id }))}
-          categoriaPrecos={categoriaPrecos}
+          sabores={saboresDaCategoria}
+          categorias={menu.categorias}
           onConfirm={handleConfirm}
         />
       </div>

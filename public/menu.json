@@ -5,42 +5,45 @@
     "taxa_entrega": 5.00
   },
   "categorias": [
-    {
-      "id": "tradicionais",
-      "nome": "Tradicionais Simples",
-      "tipo": "pizza",
-      "preco": 30.00,
-      "sabores": [
-        { "id": "mussarela", "nome": "Mussarela", "descricao": "Queijo mussarela e tomate", "imagem": "" },
-        { "id": "calabresa", "nome": "Calabresa", "descricao": "Calabresa fatiada com cebola", "imagem": "" },
-        { "id": "marguerita", "nome": "Marguerita", "descricao": "Mussarela, tomate e manjericão", "imagem": "" },
-        { "id": "napolitana", "nome": "Napolitana", "descricao": "Queijo, tomate, parmesão e orégano", "imagem": "" }
-      ]
-    },
-    {
-      "id": "especiais",
-      "nome": "Especiais",
-      "tipo": "pizza",
-      "preco": 35.00,
-      "sabores": [
-        { "id": "portuguesa", "nome": "Portuguesa", "descricao": "Presunto, ovo, cebola e ervilha", "imagem": "" },
-        { "id": "frango-catupiry", "nome": "Frango com Catupiry", "descricao": "Frango desfiado com catupiry", "imagem": "" },
-        { "id": "quatro-queijos", "nome": "Quatro Queijos", "descricao": "Mussarela, provolone, parmesão e gorgonzola", "imagem": "" },
-        { "id": "atum", "nome": "Atum Especial", "descricao": "Atum com cebola e azeitona", "imagem": "" }
-      ]
-    },
-    {
-      "id": "sensacionais",
-      "nome": "Sensacionais",
-      "tipo": "pizza",
-      "preco": 40.00,
-      "sabores": [
-        { "id": "bacon-cheddar", "nome": "Bacon com Cheddar", "descricao": "Bacon crocante com cheddar cremoso", "imagem": "" },
-        { "id": "camarao", "nome": "Camarão Especial", "descricao": "Camarão com molho especial da casa", "imagem": "" },
-        { "id": "chocolate", "nome": "Chocolate com Morango", "descricao": "Chocolate ao leite com morangos frescos", "imagem": "" },
-        { "id": "filé", "nome": "Filé Mignon", "descricao": "Filé mignon ao molho madeira com catupiry", "imagem": "" }
-      ]
-    }
+    { "id": "tradicionais", "nome": "Tradicionais", "preco": 30.00 },
+    { "id": "especiais", "nome": "Especiais", "preco": 35.00 },
+    { "id": "sensacionais", "nome": "Sensacionais", "preco": 40.00 }
+  ],
+  "sabores": [
+    { "id": "baiana", "nome": "Baiana", "descricao": "Pimenta, calabresa e cebola", "imagem": "", "categoria_id": "tradicionais" },
+    { "id": "bacon", "nome": "Bacon", "descricao": "Bacon crocante", "imagem": "", "categoria_id": "tradicionais" },
+    { "id": "batata-palha", "nome": "Batata Palha", "descricao": "Batata palha crocante", "imagem": "", "categoria_id": "tradicionais" },
+    { "id": "calabresa", "nome": "Calabresa", "descricao": "Calabresa fatiada com cebola", "imagem": "", "categoria_id": "tradicionais" },
+    { "id": "catupiry", "nome": "Catupiry", "descricao": "Catupiry cremoso", "imagem": "", "categoria_id": "tradicionais" },
+    { "id": "cheddar", "nome": "Cheddar", "descricao": "Cheddar cremoso", "imagem": "", "categoria_id": "tradicionais" },
+    { "id": "frango", "nome": "Frango", "descricao": "Frango desfiado temperado", "imagem": "", "categoria_id": "tradicionais" },
+    { "id": "milho", "nome": "Milho", "descricao": "Milho verde", "imagem": "", "categoria_id": "tradicionais" },
+    { "id": "mussarela", "nome": "Mussarela", "descricao": "Queijo mussarela e tomate", "imagem": "", "categoria_id": "tradicionais" },
+    { "id": "lombinho", "nome": "Lombinho", "descricao": "Lombinho canadense", "imagem": "", "categoria_id": "tradicionais" },
+    { "id": "portuguesa", "nome": "Portuguesa", "descricao": "Presunto, ovo e cebola", "imagem": "", "categoria_id": "tradicionais" },
+    { "id": "presunto", "nome": "Presunto", "descricao": "Presunto fatiado", "imagem": "", "categoria_id": "tradicionais" },
+    { "id": "romeu-e-julieta", "nome": "Romeu e Julieta", "descricao": "Queijo com goiabada", "imagem": "", "categoria_id": "tradicionais" },
+
+    { "id": "atum", "nome": "Atum", "descricao": "Atum com cebola", "imagem": "", "categoria_id": "especiais" },
+    { "id": "atum-catupiry", "nome": "Atum com Catupiry", "descricao": "Atum com catupiry cremoso", "imagem": "", "categoria_id": "especiais" },
+    { "id": "atum-cheddar", "nome": "Atum com Cheddar", "descricao": "Atum com cheddar cremoso", "imagem": "", "categoria_id": "especiais" },
+    { "id": "bacon-cheddar", "nome": "Bacon com Cheddar", "descricao": "Bacon com cheddar cremoso", "imagem": "", "categoria_id": "especiais" },
+    { "id": "bacon-catupiry", "nome": "Bacon com Catupiry", "descricao": "Bacon com catupiry cremoso", "imagem": "", "categoria_id": "especiais" },
+    { "id": "calacheddar", "nome": "Calacheddar", "descricao": "Calabresa com cheddar", "imagem": "", "categoria_id": "especiais" },
+    { "id": "calabacon", "nome": "Calabacon", "descricao": "Calabresa com bacon", "imagem": "", "categoria_id": "especiais" },
+    { "id": "frango-catupiry", "nome": "Frango com Catupiry", "descricao": "Frango desfiado com catupiry", "imagem": "", "categoria_id": "especiais" },
+    { "id": "frango-cheddar", "nome": "Frango com Cheddar", "descricao": "Frango desfiado com cheddar", "imagem": "", "categoria_id": "especiais" },
+    { "id": "frango-palha", "nome": "Frango com Palha", "descricao": "Frango com batata palha", "imagem": "", "categoria_id": "especiais" },
+    { "id": "frango-milho", "nome": "Frango com Milho", "descricao": "Frango com milho verde", "imagem": "", "categoria_id": "especiais" },
+    { "id": "franbacon", "nome": "Franbacon", "descricao": "Frango com bacon", "imagem": "", "categoria_id": "especiais" },
+    { "id": "mexicana", "nome": "Mexicana", "descricao": "Pimenta, carne e cebola", "imagem": "", "categoria_id": "especiais" },
+    { "id": "moda-da-casa", "nome": "Moda da Casa", "descricao": "Presunto, ervilha, milho e catupiry", "imagem": "", "categoria_id": "especiais" },
+    { "id": "peito-de-peru", "nome": "Peito de Peru", "descricao": "Peito de peru defumado", "imagem": "", "categoria_id": "especiais" },
+    { "id": "tres-queijos", "nome": "3 Queijos", "descricao": "Mussarela, catupiry e parmesão", "imagem": "", "categoria_id": "especiais" },
+
+    { "id": "carne-seca", "nome": "Carne Seca", "descricao": "Carne seca desfiada com cebola", "imagem": "", "categoria_id": "sensacionais" },
+    { "id": "pepperoni", "nome": "Pepperoni", "descricao": "Pepperoni fatiado", "imagem": "", "categoria_id": "sensacionais" },
+    { "id": "quatro-queijos", "nome": "4 Queijos", "descricao": "Mussarela, provolone, parmesão e gorgonzola", "imagem": "", "categoria_id": "sensacionais" }
   ],
   "bebidas": [
     { "id": "pepsi", "nome": "Pepsi Lata 350ml", "preco": 8.00, "imagem": "" },

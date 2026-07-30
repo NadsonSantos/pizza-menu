@@ -26,6 +26,8 @@ O Hermes **não tem suporte nativo a slash commands do spec-kit**, mas as instru
 - Siga as instruções do arquivo **exatamente** — ele contém o fluxo completo, validações e templates
 - Exemplo: para criar uma spec, leia `.opencode/commands/speckit.specify.md` e siga o outline
 
+**⚠️ REGRA CRÍTICA — UMA ETAPA POR VEZ**: Execute APENAS a etapa solicitada pelo usuário. NUNCA encadeie etapas automaticamente. Após concluir `/speckit.specify`, NÃO execute `/speckit.plan` — espere o usuário pedir explicitamente. O mesmo vale para todas as etapas do pipeline. O usuário controla o ritmo.
+
 ### Templates
 
 - `.specify/templates/spec-template.md` — Template de especificação
@@ -49,7 +51,8 @@ O Hermes **não tem suporte nativo a slash commands do spec-kit**, mas as instru
 - `speckit.git.validate` — Valida configuração git
 
 <!-- SPECKIT START -->
-Current plan: `specs/001-mvp-cardapio-pizzaria/plan.md`
+Current plan: `specs/002-refatoracao-pizzas-sabores/plan.md`
+Previous plan: `specs/001-mvp-cardapio-pizzaria/plan.md`
 Implementation plan: `.hermes/plans/2025-07-28_195900-mvp-cardapio-pizzaria.md`
 <!-- SPECKIT END -->
 
