@@ -20,13 +20,19 @@ Este projeto usa **spec-kit** (github/spec-kit) para Spec-Driven Development. O 
 
 ### Como usar com Hermes
 
-O Hermes **não tem suporte nativo a slash commands do spec-kit**, mas as instruções completas estão nos arquivos `.opencode/commands/speckit.*.md`. Para executar qualquer etapa:
+O Hermes **não tem slash commands nativos** para spec-kit. Em vez disso, digite o nome da etapa em linguagem natural. O Hermes carrega a skill correspondente automaticamente:
 
-- Leia o arquivo de comando correspondente em `.opencode/commands/speckit.<etapa>.md`
-- Siga as instruções do arquivo **exatamente** — ele contém o fluxo completo, validações e templates
-- Exemplo: para criar uma spec, leia `.opencode/commands/speckit.specify.md` e siga o outline
+| Você diz | Skill carregada | Ação |
+|----------|----------------|------|
+| `speckit constituição` | speckit-constitution | Cria/atualiza `.specify/memory/constitution.md` |
+| `speckit specify: <descrição>` | speckit-specify | Cria spec em `specs/<NNN>-<nome>/spec.md` |
+| `speckit plan` | speckit-plan | Cria plano técnico em `specs/<NNN>-<nome>/plan.md` |
+| `speckit tasks` | speckit-tasks | Gera lista de tarefas em `specs/<NNN>-<nome>/tasks.md` |
+| `speckit implement` | speckit-implement | Executa as tarefas conforme o plano |
+| `speckit clarify` | speckit-clarify | Refina ambiguidades (opcional) |
+| `speckit analyze` | speckit-analyze | Relatório de consistência (opcional) |
 
-**⚠️ REGRA CRÍTICA — UMA ETAPA POR VEZ**: Execute APENAS a etapa solicitada pelo usuário. NUNCA encadeie etapas automaticamente. Após concluir `/speckit.specify`, NÃO execute `/speckit.plan` — espere o usuário pedir explicitamente. O mesmo vale para todas as etapas do pipeline. O usuário controla o ritmo.
+**⚠️ REGRA CRÍTICA — UMA ETAPA POR VEZ**: Execute APENAS a etapa solicitada. NUNCA encadeie etapas automaticamente. Após concluir `speckit specify`, NÃO execute `speckit plan` — espere o usuário pedir explicitamente.
 
 ### Templates
 
