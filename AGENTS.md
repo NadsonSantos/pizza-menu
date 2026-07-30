@@ -66,3 +66,7 @@ Implementation plan: `.hermes/plans/2025-07-28_195900-mvp-cardapio-pizzaria.md`
 | Dados | `public/menu.json` estático |
 | PWA | vite-plugin-pwa (Workbox) |
 | Hospedagem | Estática (Vercel/Netlify/GitHub Pages) |
+
+## Ferramentas
+
+- **RTK** (`rtk`) — proxy CLI para token-optimized outputs. Prefixe comandos com `rtk` para outputs compactos: `rtk git status`, `rtk npm run build`, `rtk npx tsc`. Ver `CLAUDE.md` para referência completa de comandos. Filtros customizados em `.rtk/filters.toml`.

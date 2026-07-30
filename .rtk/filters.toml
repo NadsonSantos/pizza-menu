@@ -1,0 +1,24 @@
+# Project-local RTK filters — commit this file with your repo.
+# Filters here override user-global and built-in filters.
+schema_version = 1
+
+# ============================================================
+# pizza-menu project-specific filters
+# ============================================================
+
+[filters.build]
+description = "Compact npm build output (hide npm boilerplate)"
+match_command = "^npm\\s+run\\s+build"
+strip_lines_matching = [
+  "^> pizza-menu",
+  "^npm warn",
+  "^computing gzip",
+  "^\\s*$",
+]
+max_lines = 20
+
+[filters.tsc-check]
+description = "Group TypeScript errors by file, hide clean output"
+match_command = "^npx\\s+tsc"
+strip_lines_matching = []
+on_empty = "tsc: ✓ no errors"
