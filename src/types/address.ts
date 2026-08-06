@@ -12,7 +12,6 @@ export interface AddressState {
 }
 
 export type AddressAction =
-  | { type: 'LOAD'; addresses: Address[]; selectedId: string | null }
   | { type: 'ADD'; address: Address }
   | { type: 'REMOVE'; id: string }
   | { type: 'SELECT'; id: string | null };
@@ -22,5 +21,5 @@ export interface AddressContextValue {
   addAddress: (addr: Omit<Address, 'id'>) => void;
   removeAddress: (id: string) => void;
   selectAddress: (id: string | null) => void;
-  getSelectedAddress: () => Address | undefined;
+  getSelectedAddress: (id?: string | null) => Address | undefined;
 }

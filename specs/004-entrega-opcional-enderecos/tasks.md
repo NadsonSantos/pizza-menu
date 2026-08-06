@@ -206,3 +206,72 @@ Phase 6: T014 → T015
 - No new dependencies needed — only React 18 + React Router 6 + Tailwind CSS 3
 - Address fields: rua (required, max 100), numero (required, max 10), complemento (optional, max 50), pontoReferencia (optional, max 100)
 - Endereço NÃO bloqueia finalização — fallback "*a informar*" no WhatsApp
+
+---
+
+## Code Review Tasks (adicionadas pelo Code Review Agent — 2026-08-06)
+
+- [X] CR-001 Consumir `CartState.selectedAddressId` no fluxo de finalização (estado write-only)
+
+Contexto:
+FR-006 exige o campo `CartState.selectedAddressId`; o `CheckoutPage` o mantém em sincronia com o `AddressContext` via `useEffect` + `dispatch({ type: 'SET_ADDRESS' })` (`src/pages/CheckoutPage.tsx:16-18`). Porém nenhum consumidor lê `state.selectedAddressId`: o `WhatsAppButton` resolve o endereço diretamente via `useAddress().getSelectedAddress()` (`src/components/WhatsAppButton.tsx:15-17`).
+
+Problema:
+O campo é escrito e nunca lido — estado morto. O efeito de sincronização dispara um `SET_ADDRESS` extra a cada mount do checkout sem efeito observável, adicionando complexidade sem propósito.
+
+Critério de aceite:
+
+- `WhatsAppButton` resolve o endereço a partir de `state.selectedAddressId` (ex.: `getSelectedAddress()` passando o id do cart) em vez de ler o `AddressContext` diretamente — o campo FR-006 passa a ter um consumidor real
+- Ou, se aprovado ajuste de spec, remover o campo + efeito de sincronização
+- `npm run build` continua passando
+
+Prioridade:
+Medium
+
+- [X] CR-002 Completar validação de tipos no load do localStorage (complemento/pontoReferencia)
+
+Contexto:
+`isValidStoredAddress` (`src/context/AddressContext.tsx:12-22`) valida apenas `id`, `rua` e `numero` como strings. `formatAddress` (`src/utils/address.ts:6-8`) chama `.trim()` em `complemento` e `pontoReferencia`.
+
+Problema:
+Um payload adulterado/corrompido com `complemento` ou `pontoReferencia` não-string (ex.: `null`, número) passa na validação de carga e quebra o app com `TypeError` ao renderizar o card/lista de endereços — contrariando o edge case da spec ("payload inválido → fallback silencioso").
+
+Critério de aceite:
+
+- `isValidStoredAddress` valida os 4 campos de texto como string
+- Payload inválido → estado vazio sem crash (fallback silencioso mantido)
+
+Prioridade:
+Low
+
+- [X] CR-003 Remover fallback hardcoded `?? 5` da taxa de entrega
+
+Contexto:
+FR-001/FR-002 exigem usar `pizzaria.taxa_entrega` do `menu.json` ("não hardcodar R$ 5"). `CartContext` (`src/context/CartContext.tsx:59`) e `DeliveryToggle` (`src/components/DeliveryToggle.tsx:8`) usam `menu?.pizzaria?.taxa_entrega ?? 5`.
+
+Problema:
+O literal `5` permanece hardcoded como fallback em dois pontos, contrariando o texto das FRs. Na prática só atinge o estado de carregamento do menu (carrinho inacessível antes), mas viola a regra literal.
+
+Critério de aceite:
+
+- Fallback substituído por `0` ou renderização condicional até o menu carregar
+- Nenhum literal `5` de taxa de entrega em `CartContext`/`DeliveryToggle`
+
+Prioridade:
+Low
+
+- [X] CR-004 Remover ação `LOAD` morta do AddressContext
+
+Contexto:
+`AddressAction` inclui `{ type: 'LOAD' }` (`src/types/address.ts:15`) e o reducer tem o case `'LOAD'` (`src/context/AddressContext.tsx:51`), mas `loadFromStorage` é usado como lazy initializer do `useReducer` (`src/context/AddressContext.tsx:72`) — a ação nunca é despachada.
+
+Problema:
+Código morto (tipo + case de reducer) que nunca executa.
+
+Critério de aceite:
+
+- `LOAD` removido de `AddressAction` e do reducer, mantendo o lazy initializer
+- `npm run build` continua passando
+
+Prioridade:
+Low

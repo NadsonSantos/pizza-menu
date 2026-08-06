@@ -17,7 +17,9 @@ function isValidStoredAddress(value: unknown): value is Address {
     typeof addr.rua === 'string' &&
     addr.rua.trim().length > 0 &&
     typeof addr.numero === 'string' &&
-    addr.numero.trim().length > 0
+    addr.numero.trim().length > 0 &&
+    typeof addr.complemento === 'string' &&
+    typeof addr.pontoReferencia === 'string'
   );
 }
 
@@ -47,8 +49,6 @@ function loadFromStorage(): AddressState {
 
 function addressReducer(state: AddressState, action: AddressAction): AddressState {
   switch (action.type) {
-    case 'LOAD':
-      return { addresses: action.addresses.slice(0, MAX_ADDRESSES), selectedId: action.selectedId };
     case 'ADD': {
       if (state.addresses.length >= MAX_ADDRESSES) return state;
       const addresses = [...state.addresses, action.address];
@@ -91,8 +91,8 @@ export function AddressProvider({ children }: { children: ReactNode }) {
     dispatch({ type: 'SELECT', id });
   };
 
-  const getSelectedAddress = (): Address | undefined => {
-    return state.addresses.find(a => a.id === state.selectedId);
+  const getSelectedAddress = (id?: string | null): Address | undefined => {
+    return state.addresses.find(a => a.id === (id ?? state.selectedId));
   };
 
   return (

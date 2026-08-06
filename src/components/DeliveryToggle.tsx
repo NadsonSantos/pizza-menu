@@ -5,7 +5,7 @@ import { formatCurrency } from '../utils/pricing';
 export default function DeliveryToggle() {
   const { state, dispatch } = useCart();
   const { menu } = useMenu();
-  const taxa = menu?.pizzaria?.taxa_entrega ?? 5;
+  const taxa = menu?.pizzaria?.taxa_entrega ?? 0;
 
   return (
     <div className="space-y-2">

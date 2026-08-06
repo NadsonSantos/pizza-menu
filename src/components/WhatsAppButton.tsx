@@ -12,7 +12,7 @@ export default function WhatsAppButton() {
   if (!menu) return null;
 
   const handleFinish = () => {
-    const selectedAddress = getSelectedAddress();
+    const selectedAddress = getSelectedAddress(state.selectedAddressId);
     const endereco =
       state.delivery === 'entrega' && selectedAddress ? formatAddress(selectedAddress) : undefined;
     const msg = formatWhatsAppMessage(state, menu.pizzaria.nome, subtotal, taxaEntrega, total, endereco);

@@ -56,7 +56,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
   };
 
   const subtotal = state.items.reduce((s, i) => s + i.precoUnitario * i.quantidade, 0);
-  const taxaBase = menu?.pizzaria?.taxa_entrega ?? 5;
+  const taxaBase = menu?.pizzaria?.taxa_entrega ?? 0;
   const taxaEntrega = state.delivery === 'entrega' ? taxaBase : 0;
   const total = subtotal + taxaEntrega;
   const itemCount = state.items.reduce((s, i) => s + i.quantidade, 0);
