@@ -275,3 +275,22 @@ Critério de aceite:
 
 Prioridade:
 Low
+
+- [X] CR-005 Remover bloco `MULTICA-RUNTIME` de `AGENTS.md` do branch da feature
+
+Contexto:
+O commit `2de420a` (correções CR-001 a CR-004) incluiu por acidente 365 linhas do bloco `<!-- BEGIN MULTICA-RUNTIME (auto-managed; do not edit) -->` em `AGENTS.md`. Esse bloco é conteúdo gerado automaticamente pelo runtime do agente em cada sessão — ele muda a cada execução (ex.: o campo `You are:` alterna entre os agentes Front-End Engineer e Code Review Agent). A única mudança legítima de `AGENTS.md` na branch é o marcador `<!-- SPECKIT START -->` do commit `0f845dd` (Current plan → `004`).
+
+Problema:
+- Conteúdo fora do escopo da NAD-3: nenhum artefato (spec/plan/tasks) prevê alteração de `AGENTS.md` além do marcador SPECKIT
+- Conteúdo volátil e específico de sessão: vai gerar diff noise e conflitos a cada merge/fetch, pois o bloco difere entre execuções de agentes
+- ~21% do diff do PR (#2, +369 linhas vs main) é ruído não relacionado à feature
+
+Critério de aceite:
+
+- `AGENTS.md` no branch restaurado para o conteúdo de `main` + apenas o marcador `<!-- SPECKIT START -->` atualizado (equivalente ao estado pós-`0f845dd`)
+- O bloco `MULTICA-RUNTIME` não aparece no diff final do PR
+- `npm run build` continua passando
+
+Prioridade:
+Medium
