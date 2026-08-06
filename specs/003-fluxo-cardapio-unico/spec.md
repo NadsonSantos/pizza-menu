@@ -109,3 +109,48 @@ As entidades `Categoria`, `Sabor`, `Bebida`, `CartItem`, `CartState` não mudam.
 - O seletor de sabores unificado (cross-categoria) substitui o PizzaBuilder específico por categoria. Agora há UM único botão "Montar Pizza" que abre o seletor com todos os sabores.
 - O sticky nav usa `position: sticky` CSS com `IntersectionObserver` para detecção de categoria ativa.
 - Nenhuma mudança no carrinho, checkout, WhatsApp, PWA, ou lógica de precificação.
+
+---
+
+## Fase 2 — Correções Pós-Validação (NAD-2)
+
+**Input**: Validação PO da Fase 1 (issue NAD-2) — veredito: **reprovado**. A US1 não conforma: o nav sticky fica oculto atrás do header sticky do app durante o scroll, tornando as âncoras invisíveis e inutilizáveis (quebra FR-002/FR-004/FR-005 e os cenários US1-2/3/4, SC-002/SC-003).
+
+### User Story 4 — Nav sticky visível e utilizável durante todo o scroll (Priority: P1) 🎯
+
+O cliente rola a página e o menu de categorias permanece visível e clicável logo abaixo do header do app, com o item da categoria ativa destacado.
+
+**Why this priority**: É a correção do comportamento central da US1 — sem ela, o sticky nav não cumpre sua função (âncoras inacessíveis durante o scroll).
+
+**Independent Test**: Abrir o app, rolar a página > 300px e verificar que o nav de categorias continua visível abaixo do header vermelho. Clicar em "Sensacionais" com a página rolada → scroll suave até a seção. Rolar até Bebidas → item "Bebidas" destacado.
+
+**Acceptance Scenarios**:
+
+1. **Given** que o cliente rolou a página (ex.: 300px+), **When** observa o topo da viewport, **Then** o nav de categorias permanece visível e clicável abaixo do header do app, sem sobreposição.
+2. **Given** que a página está rolada e o nav está visível, **When** o cliente clica em "Sensacionais" no nav, **Then** a página rola suavemente até a seção Sensacionais em < 500ms.
+3. **Given** que o cliente rola até a seção Bebidas, **When** a seção Bebidas está no viewport, **Then** o item "Bebidas" do nav fica destacado.
+4. **Given** que o conteúdo da página é curto (não preenche a tela), **When** a página carrega, **Then** o primeiro item do nav permanece destacado.
+
+### Requirements *(Fase 2)*
+
+- **FR-015**: O nav de categorias DEVE permanecer totalmente visível e clicável durante o scroll, posicionado abaixo do header do app — sem sobreposição de `top`/`z-index` com o header sticky (ex.: header `sticky top-0` e nav com offset `top` igual à altura do header, ou estrutura equivalente que evite o empilhamento).
+- **FR-016**: A seção de Bebidas DEVE ser incluída na detecção de categoria ativa (IntersectionObserver), destacando o item "Bebidas" do nav quando a seção estiver visível.
+- **FR-017**: Quando nenhuma seção intersecta a faixa de detecção (ex.: conteúdo curto), o primeiro item do nav DEVE permanecer destacado (categoria ativa inicial = primeira categoria).
+
+### Success Criteria *(Fase 2)*
+
+- **SC-007**: Com a página rolada, o nav permanece visível abaixo do header (verificação: `elementFromPoint` no centro de um botão do nav retorna o próprio botão, não o header).
+- **SC-008**: Clique em qualquer item do nav com a página rolada → scroll suave em < 500ms até a seção.
+- **SC-009**: O item "Bebidas" fica destacado quando a seção Bebidas está visível no fim da página.
+- **SC-010**: Nenhuma regressão nas funcionalidades da Fase 1 (US2/US3, FR-011 a FR-014, carrinho/checkout/WhatsApp/PWA) — revalidar os cenários da Fase 1 após a correção.
+
+### Edge Cases *(Fase 2)*
+
+- **Conteúdo curto**: com poucos itens, o nav continua visível e o primeiro item permanece destacado (FR-017).
+- **Header vs nav**: a correção não pode quebrar o header sticky do app (`Layout`) nem o layout em telas pequenas.
+
+### Assumptions *(Fase 2)*
+
+- A primeira categoria exibe o nome "Simples" no cardápio (id `tradicionais`), conforme stakeholder (tasks.md T060). A Fase 1 referencia "Tradicionais" como nome da categoria; o `id`/ordem é o que importa para a regra de preço (FR-011).
+- Nenhuma mudança no carrinho, checkout, WhatsApp, PWA, ou lógica de precificação.
+
