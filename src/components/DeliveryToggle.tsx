@@ -1,8 +1,12 @@
 import { useCart } from '../context/CartContext';
+import { useMenu } from '../context/MenuContext';
 import { formatCurrency } from '../utils/pricing';
 
 export default function DeliveryToggle() {
   const { state, dispatch } = useCart();
+  const { menu } = useMenu();
+  const taxa = menu?.pizzaria?.taxa_entrega ?? 5;
+
   return (
     <div className="space-y-2">
       <h3 className="text-sm font-semibold text-gray-700">Opção de recebimento</h3>
@@ -12,6 +16,7 @@ export default function DeliveryToggle() {
             key={m}
             type="button"
             onClick={() => dispatch({ type: 'SET_DELIVERY', mode: m })}
+            aria-pressed={state.delivery === m}
             className={`p-3 rounded-xl border-2 text-sm font-medium transition-all cursor-pointer ${
               state.delivery === m
                 ? 'border-red-500 bg-red-50 text-red-700'
@@ -19,7 +24,7 @@ export default function DeliveryToggle() {
             }`}
           >
             <span className="block text-base mb-0.5">{m === 'entrega' ? '🛵' : '🚶'}</span>
-            {m === 'entrega' ? `Entrega (+${formatCurrency(5)})` : 'Retirada'}
+            {m === 'entrega' ? `Entrega (+${formatCurrency(taxa)})` : 'Retirada'}
           </button>
         ))}
       </div>

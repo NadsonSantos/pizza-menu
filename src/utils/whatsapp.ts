@@ -6,7 +6,8 @@ export function formatWhatsAppMessage(
   pizzariaNome: string,
   subtotal: number,
   taxaEntrega: number,
-  total: number
+  total: number,
+  endereco?: string
 ): string {
   const lines: string[] = [];
   lines.push(`🍕 *Pedido — ${pizzariaNome}*`);
@@ -27,6 +28,9 @@ export function formatWhatsAppMessage(
   lines.push('');
   const entrega = state.delivery === 'entrega' ? 'Sim' : 'Retirada no local';
   lines.push(`*Entrega:* ${entrega}`);
+  if (state.delivery === 'entrega') {
+    lines.push(endereco ? `*Endereço:* ${endereco}` : '*Endereço:* *a informar*');
+  }
   lines.push(`*Pagamento:* ${paymentLabel(state)}`);
   if (state.payment === 'dinheiro' && state.troco) lines.push(`*Troco para:* R$ ${state.troco}`);
   lines.push('');

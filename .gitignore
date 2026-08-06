@@ -7,3 +7,5 @@ Thumbs.db
 *.swp
 .vscode/
 .idea/
+.multica/
+.agent_context/
