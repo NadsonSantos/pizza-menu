@@ -130,6 +130,32 @@ npm run build   # Build limpo
 
 ---
 
+## Phase 6: Fase 2 — Correções Pós-Validação (US4)
+
+**Goal**: Nav sticky visível e clicável abaixo do header durante todo o scroll; seção Bebidas ativa no IntersectionObserver; primeira categoria como ativa default.
+
+**Independent Test**: Rolar a página > 300px → nav permanece visível abaixo do header. Clicar "Sensacionais" com a página rolada → scroll suave até a seção. Rolar até Bebidas → item "Bebidas" destacado.
+
+### Tasks
+
+- [ ] T070 [US4] Corrigir posicionamento do sticky nav em `src/pages/MenuPage.tsx` — nav DEVE fixar abaixo do header do app (altura ~56px), ex.: `sticky top-[56px]` (ou mover o nav para dentro do header), sem sobreposição de `top`/`z-index` com o header sticky (`src/components/Layout.tsx`, z-50) — FR-015 / SC-007
+- [ ] T071 [US4] Registrar ref da seção Bebidas no IntersectionObserver em `src/pages/MenuPage.tsx` — observar `cat-bebidas` para o item "Bebidas" do nav ficar destacado quando a seção estiver visível — FR-016 / SC-009
+- [ ] T072 [US4] Definir primeira categoria como ativa default em `src/pages/MenuPage.tsx` — quando nenhuma seção intersecta a faixa do observer (ex.: conteúdo curto), o primeiro item do nav permanece destacado — FR-017 / edge case conteúdo curto
+- [ ] T073 [P] [US4] Verificar layout em telas pequenas (375px) — nav abaixo do header sem quebrar o sticky do `Layout` nem o scroll-mt das seções — edge case header vs nav
+
+### 🛑 Phase 6 Validation
+
+```text
+npm run build                        # Build limpo
+Rolar > 300px → nav visível abaixo do header (elementFromPoint no botão do nav retorna o botão, não o header) — SC-007
+Clicar "Sensacionais" com página rolada → scroll suave < 500ms — SC-008
+Rolar até Bebidas → item "Bebidas" destacado — SC-009
+Conteúdo curto → primeiro item destacado — FR-017
+Regressão: carrinho, checkout, WhatsApp, PWA ok — SC-010
+```
+
+---
+
 ## Dependencies & Execution Order
 
 ```
@@ -146,6 +172,9 @@ Phase 4 (FlavorSelector) ──────────────────�
       │
       ▼
 Phase 5 (Validação) ─────────────────────────────────────────────────────────►
+      │
+      ▼
+Phase 6 (Correções US4 — Fase 2) ────────────────────────────────────────────►
 ```
 
 ### Parallel Opportunities
@@ -157,6 +186,7 @@ Phase 5 (Validação) ───────────────────�
 | 3 | T063 ║ T064 |
 | 4 | T065 ║ T066 |
 | 5 | Sequencial |
+| 6 | T073 paralela a T070/T071/T072 |
 
 ### Files Changed
 
@@ -167,6 +197,7 @@ Phase 5 (Validação) ───────────────────�
 | 3 | `src/components/PizzaBuilder.tsx` |
 | 4 | `src/components/FlavorSelector.tsx`, `src/context/MenuContext.tsx` |
 | 5 | — |
+| 6 | `src/pages/MenuPage.tsx` (T070/T071/T072), `src/components/Layout.tsx` (se necessário para T070) |
 
 ### Rollback
 
