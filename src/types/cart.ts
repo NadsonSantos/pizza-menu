@@ -18,6 +18,7 @@ export interface CartState {
   delivery: DeliveryMode;
   payment: PaymentMethod | null;
   troco: string;
+  selectedAddressId: string | null;
 }
 
 export type CartAction =
@@ -27,4 +28,5 @@ export type CartAction =
   | { type: 'SET_DELIVERY'; mode: DeliveryMode }
   | { type: 'SET_PAYMENT'; method: PaymentMethod }
   | { type: 'SET_TROCO'; troco: string }
+  | { type: 'SET_ADDRESS'; id: string | null }
   | { type: 'CLEAR_CART' };

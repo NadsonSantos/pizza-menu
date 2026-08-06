@@ -1,11 +1,13 @@
 import { createContext, useContext, useReducer, ReactNode } from 'react';
 import { CartState, CartAction, CartItem } from '../types/cart';
+import { useMenu } from './MenuContext';
 
 const initialState: CartState = {
   items: [],
   delivery: 'entrega',
   payment: null,
   troco: '',
+  selectedAddressId: null,
 };
 
 function cartReducer(state: CartState, action: CartAction): CartState {
@@ -24,6 +26,8 @@ function cartReducer(state: CartState, action: CartAction): CartState {
       return { ...state, payment: action.method, troco: action.method !== 'dinheiro' ? '' : state.troco };
     case 'SET_TROCO':
       return { ...state, troco: action.troco };
+    case 'SET_ADDRESS':
+      return { ...state, selectedAddressId: action.id };
     case 'CLEAR_CART':
       return initialState;
     default:
@@ -45,13 +49,15 @@ const CartContext = createContext<CartContextValue | null>(null);
 
 export function CartProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(cartReducer, initialState);
+  const { menu } = useMenu();
 
   const addItem = (item: Omit<CartItem, 'id'>) => {
     dispatch({ type: 'ADD_ITEM', item: { ...item, id: crypto.randomUUID() } });
   };
 
   const subtotal = state.items.reduce((s, i) => s + i.precoUnitario * i.quantidade, 0);
-  const taxaEntrega = state.delivery === 'entrega' ? 5 : 0;
+  const taxaBase = menu?.pizzaria?.taxa_entrega ?? 0;
+  const taxaEntrega = state.delivery === 'entrega' ? taxaBase : 0;
   const total = subtotal + taxaEntrega;
   const itemCount = state.items.reduce((s, i) => s + i.quantidade, 0);
 
