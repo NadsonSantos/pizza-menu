@@ -138,10 +138,10 @@ npm run build   # Build limpo
 
 ### Tasks
 
-- [ ] T070 [US4] Corrigir posicionamento do sticky nav em `src/pages/MenuPage.tsx` — nav DEVE fixar abaixo do header do app (altura ~56px), ex.: `sticky top-[56px]` (ou mover o nav para dentro do header), sem sobreposição de `top`/`z-index` com o header sticky (`src/components/Layout.tsx`, z-50) — FR-015 / SC-007
-- [ ] T071 [US4] Registrar ref da seção Bebidas no IntersectionObserver em `src/pages/MenuPage.tsx` — observar `cat-bebidas` para o item "Bebidas" do nav ficar destacado quando a seção estiver visível — FR-016 / SC-009
-- [ ] T072 [US4] Definir primeira categoria como ativa default em `src/pages/MenuPage.tsx` — quando nenhuma seção intersecta a faixa do observer (ex.: conteúdo curto), o primeiro item do nav permanece destacado — FR-017 / edge case conteúdo curto
-- [ ] T073 [P] [US4] Verificar layout em telas pequenas (375px) — nav abaixo do header sem quebrar o sticky do `Layout` nem o scroll-mt das seções — edge case header vs nav
+- [x] T070 [US4] Corrigir posicionamento do sticky nav em `src/pages/MenuPage.tsx` — nav DEVE fixar abaixo do header do app (altura ~56px), ex.: `sticky top-[56px]` (ou mover o nav para dentro do header), sem sobreposição de `top`/`z-index` com o header sticky (`src/components/Layout.tsx`, z-50) — FR-015 / SC-007
+- [x] T071 [US4] Registrar ref da seção Bebidas no IntersectionObserver em `src/pages/MenuPage.tsx` — observar `cat-bebidas` para o item "Bebidas" do nav ficar destacado quando a seção estiver visível — FR-016 / SC-009
+- [x] T072 [US4] Definir primeira categoria como ativa default em `src/pages/MenuPage.tsx` — quando nenhuma seção intersecta a faixa do observer (ex.: conteúdo curto), o primeiro item do nav permanece destacado — FR-017 / edge case conteúdo curto
+- [x] T073 [P] [US4] Verificar layout em telas pequenas (375px) — nav abaixo do header sem quebrar o sticky do `Layout` nem o scroll-mt das seções — edge case header vs nav
 
 ### 🛑 Phase 6 Validation
 

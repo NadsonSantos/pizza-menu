@@ -16,6 +16,8 @@ export default function MenuPage() {
   // MUST be before early returns to keep hook order stable
   useEffect(() => {
     if (!menu) return;
+    // FR-017: primeira categoria como ativa default (ex.: conteúdo curto)
+    setActiveCat((prev) => prev ?? menu.categorias[0]?.id ?? null);
     const observer = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
@@ -41,8 +43,8 @@ export default function MenuPage() {
 
   return (
     <div className="pb-8">
-      {/* Sticky Nav */}
-      <nav className="sticky top-0 z-40 bg-gray-50/95 backdrop-blur-sm border-b border-gray-200 -mx-4 px-4 py-2 mb-4 flex gap-2 overflow-x-auto scrollbar-none">
+      {/* Sticky Nav — FR-015: fixa abaixo do header do app (~56px), sem sobrepor o z-50 do Layout */}
+      <nav className="sticky top-[56px] z-40 bg-gray-50/95 backdrop-blur-sm border-b border-gray-200 -mx-4 px-4 py-2 mb-4 flex gap-2 overflow-x-auto scrollbar-none">
         {menu.categorias.map(cat => (
           <button
             key={cat.id}
@@ -74,7 +76,7 @@ export default function MenuPage() {
           key={cat.id}
           id={`cat-${cat.id}`}
           ref={el => { if (el) sectionRefs.current.set(cat.id, el); }}
-          className="mb-8 scroll-mt-24"
+          className="mb-8 scroll-mt-[120px]"
         >
           <div className="flex items-center justify-between mb-3">
             <h2 className="text-lg font-bold text-gray-900">{cat.nome}</h2>
@@ -98,8 +100,12 @@ export default function MenuPage() {
         </section>
       ))}
 
-      {/* Bebidas Section */}
-      <section id="cat-bebidas" className="scroll-mt-24">
+      {/* Bebidas Section — FR-016: registrada no IntersectionObserver para destacar o item "Bebidas" */}
+      <section
+        id="cat-bebidas"
+        ref={el => { if (el) sectionRefs.current.set('bebidas', el); }}
+        className="scroll-mt-[120px]"
+      >
         <DrinkSection bebidas={menu.bebidas} onAdd={b => addItem({
           tipo: 'bebida', nome: b.nome, sabores: [],
           precoUnitario: b.preco, quantidade: 1, observacao: '',
