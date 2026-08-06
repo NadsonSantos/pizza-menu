@@ -5,7 +5,7 @@
     "taxa_entrega": 5.00
   },
   "categorias": [
-    { "id": "tradicionais", "nome": "Tradicionais", "preco": 30.00 },
+    { "id": "tradicionais", "nome": "Simples", "preco": 30.00 },
     { "id": "especiais", "nome": "Especiais", "preco": 35.00 },
     { "id": "sensacionais", "nome": "Sensacionais", "preco": 40.00 }
   ],

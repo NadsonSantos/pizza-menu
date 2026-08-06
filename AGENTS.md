@@ -57,8 +57,8 @@ O Hermes **não tem slash commands nativos** para spec-kit. Em vez disso, digite
 - `speckit.git.validate` — Valida configuração git
 
 <!-- SPECKIT START -->
-Current plan: `specs/002-refatoracao-pizzas-sabores/plan.md`
-Previous plan: `specs/001-mvp-cardapio-pizzaria/plan.md`
+Current plan: `specs/003-fluxo-cardapio-unico/plan.md`
+Previous plan: `specs/002-refatoracao-pizzas-sabores/plan.md`
 Implementation plan: `.hermes/plans/2025-07-28_195900-mvp-cardapio-pizzaria.md`
 <!-- SPECKIT END -->
 
@@ -79,3 +79,37 @@ Implementation plan: `.hermes/plans/2025-07-28_195900-mvp-cardapio-pizzaria.md`
 ## Ferramentas
 
 - **RTK** (`rtk`) — proxy CLI para token-optimized outputs. Prefixe comandos com `rtk` para outputs compactos: `rtk git status`, `rtk npm run build`, `rtk npx tsc`. Ver `CLAUDE.md` para referência completa de comandos. Filtros customizados em `.rtk/filters.toml`.
+
+---
+
+## Pipeline SDD Autônomo (contrato de handoff entre agentes Multica)
+
+Agentes do workspace Nadson-Work: **Product Owner** (orquestrador), **Front-End Engineer (React + Tailwind CSS)** (implementador), **Code Review Agent** (quality gate). Fluxo obrigatório:
+
+1. Usuário descreve necessidade → **PO** cria a issue no repositório.
+2. **PO** roda `/spec` (speckit specify), gera `specs/<NNN>-<nome>/spec.md`, comenta na issue mencionando o usuário e **aguarda aprovação** (aprovado / aprovado com ressalvas / ajuste).
+3. Aprovado → **PO** roda `/plan` (speckit plan), cria a **branch da issue**, gera os artefatos de plano, comenta mencionando o usuário e **aguarda aprovação**. Ajuste → PO revisa e comenta novamente.
+4. Aprovado → **PO menciona o Engenheiro** na issue para implementar as tasks do plano na branch criada.
+5. **Engenheiro** implementa na branch, roda auditorias internas (`security-auditor` OWASP, `a11y-ux-auditor`, `test-writer`, `perf-auditor`), push e **abre/atualiza PR**.
+   - Inconsistência real no `/plan` → Engenheiro **não força**: menciona o PO para ajustar o plano (volta ao passo 3).
+6. Engenheiro conclui → **menciona o Code Reviewer no PR**.
+7. **Code Reviewer** revisa via PR: qualidade, testes, **e auditorias de segurança (OWASP) e UX/UI/a11y** — não aprova por estilo.
+   - Reprovou → menciona o Engenheiro com tasks de correção; Engenheiro corrige e volta ao passo 6.
+   - **3ª rejeição no mesmo ciclo** → CR **escalona para o usuário** (resumo dos motivos) e aguarda decisão.
+   - Aprovou → **menciona o PO**.
+8. **PO** valida a implementação final contra a spec original.
+   - Reprovou → menciona o Engenheiro com ajustes (volta ao passo 6).
+   - Aprovou → **merge na `main`**, **fecha a issue**, e **menciona o usuário** com a conclusão (PR/commit mergeado).
+
+### Regras gerais
+
+- Cada agente **só age quando mencionado/acionado**; nunca pula etapa nem avança sem aprovação humana nos gates (fim do /spec e fim do /plan).
+- Todo handoff via comentário na issue/PR mencionando o responsável pelo próximo passo, registrando: quem acionou, quando, resultado (aprovado/rejeitado + motivo).
+- Cada agente atualiza o status da issue/task antes de passar adiante.
+- Loop Engenheiro ⇄ Code Reviewer autocontido até **3 rejeições**; a partir daí escala para o usuário.
+- Usuário só é mencionado nos pontos de decisão: aprovação de spec, aprovação de plano, escalonamento por rejeições repetidas e conclusão final.
+- Toda implementação em **branch própria da issue**; Code Reviewer revisa **via PR**, nunca código solto.
+- **Não há timeout automático**: pipeline pausado aguardando aprovação humana é comportamento esperado, não falha.
+- Somente o **PO** comunica o usuário diretamente; o Code Reviewer só o menciona no escalonamento.
+- Encerramento da SPEC só é completo após: aprovação final do PO + merge na main + fechamento da issue.
+- Menções em comentários: `[@Nome](mention://agent/<uuid>)` (texto puro `@Nome` não dispara).
