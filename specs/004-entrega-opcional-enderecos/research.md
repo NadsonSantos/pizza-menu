@@ -60,7 +60,7 @@
 
 ### 5. Validação de Endereço
 
-**Decision**: Validação client-side simples: `rua`, `numero`, `bairro` obrigatórios; `complemento` opcional. Campos com `maxLength` para evitar overflow.
+**Decision**: Validação client-side simples: `rua`, `numero` obrigatórios; `complemento`, `pontoReferencia` opcionais. Campos com `maxLength` para evitar overflow.
 
 **Rationale**: Não há backend para validar. Validação deve ser suficiente para garantir que o endereço está preenchido o bastante para entrega.
 

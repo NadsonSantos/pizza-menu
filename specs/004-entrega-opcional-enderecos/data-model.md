@@ -10,11 +10,11 @@
 ```typescript
 // src/types/address.ts
 export interface Address {
-  id: string;           // crypto.randomUUID()
-  rua: string;          // obrigatório, maxLength 100
-  numero: string;       // obrigatório, maxLength 10
-  bairro: string;       // obrigatório, maxLength 50
-  complemento: string;  // opcional, maxLength 50
+  id: string;            // crypto.randomUUID()
+  rua: string;           // obrigatório, maxLength 100
+  numero: string;        // obrigatório, maxLength 10
+  complemento: string;   // opcional, maxLength 50
+  pontoReferencia: string; // opcional, maxLength 100
 }
 ```
 
@@ -111,8 +111,8 @@ export function formatWhatsAppMessage(
       "id": "uuid-v4",
       "rua": "Rua das Pizzas",
       "numero": "123",
-      "bairro": "Centro",
-      "complemento": "Apto 45"
+      "complemento": "Apto 45",
+      "pontoReferencia": "Próximo ao mercado"
     }
   ],
   "selectedId": "uuid-v4"
@@ -120,7 +120,7 @@ export function formatWhatsAppMessage(
 ```
 
 **Chave**: `pizza-menu-addresses`  
-**Validação na carga**: Checar se é array, se ≤ 2 itens, se campos obrigatórios existem. Se inválido, resetar para estado vazio.
+**Validação na carga**: Checar se é array, se ≤ 2 itens, se campos obrigatórios (`rua`, `numero`) existem. Se inválido, resetar para estado vazio.
 
 ## Unchanged Entities
 

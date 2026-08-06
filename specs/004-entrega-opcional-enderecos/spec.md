@@ -37,7 +37,7 @@ Ao selecionar "Entrega", o cliente vê abaixo do toggle um card com o último en
 
 **Acceptance Scenarios**:
 
-1. **Given** que o cliente selecionou "Entrega" e já tem um endereço salvo (último selecionado), **When** o card de endereço renderiza, **Then** exibe rua, número, bairro, complemento (se houver) e um botão "Alterar endereço".
+1. **Given** que o cliente selecionou "Entrega" e já tem um endereço salvo (último selecionado), **When** o card de endereço renderiza, **Then** exibe rua, número, complemento (se houver), ponto de referência (se houver) e um botão "Alterar endereço".
 2. **Given** que o cliente selecionou "Entrega" e não tem endereço salvo, **When** o card renderiza, **Then** exibe "Nenhum endereço salvo" com botão "Adicionar endereço".
 3. **Given** que o cliente selecionou "Entrega" sem endereço, **When** clica em "Adicionar endereço", **Then** navega para `/enderecos?from=checkout`.
 4. **Given** que o cliente selecionou "Retirada", **When** o card de endereço, **Then** NÃO é exibido (apenas quando delivery === 'entrega').
@@ -46,7 +46,7 @@ Ao selecionar "Entrega", o cliente vê abaixo do toggle um card com o último en
 
 ### User Story 3 — Tela de Gerenciamento de Endereços (Priority: P2)
 
-O cliente acessa `/enderecos` para visualizar, adicionar e remover endereços (limite de 2). A tela lista endereços existentes como cards com opção de excluir. Um botão "Adicionar endereço" abre um formulário (ou expande inline) com campos: rua, número, bairro, complemento (opcional).
+O cliente acessa `/enderecos` para visualizar, adicionar e remover endereços (limite de 2). A tela lista endereços existentes como cards com opção de excluir. Um botão "Adicionar endereço" abre um formulário (ou expande inline) com campos: rua, número, complemento (opcional) e ponto de referência (opcional).
 
 **Why this priority**: Depende da US1/US2 para fazer sentido, mas é testável isoladamente via navegação direta.
 
@@ -73,7 +73,7 @@ Quando o cliente finaliza o pedido com "Entrega", a mensagem do WhatsApp inclui 
 
 **Acceptance Scenarios**:
 
-1. **Given** que o delivery é "entrega" e há endereço selecionado, **When** o cliente finaliza, **Then** a mensagem do WhatsApp inclui "Endereço: Rua X, 123 — Bairro Y (Complemento Z)".
+1. **Given** que o delivery é "entrega" e há endereço selecionado, **When** o cliente finaliza, **Then** a mensagem do WhatsApp inclui "Endereço: Rua X, 123 (Complemento Z) — Ref: Ponto Y".
 2. **Given** que o delivery é "entrega" e NÃO há endereço, **When** o cliente finaliza, **Then** a mensagem inclui "Endereço: *a informar*".
 3. **Given** que o delivery é "retirada", **When** o cliente finaliza, **Then** a mensagem NÃO inclui linha de endereço.
 
@@ -100,7 +100,7 @@ Quando o cliente finaliza o pedido com "Entrega", a mensagem do WhatsApp inclui 
 - **FR-007**: O `CheckoutPage` DEVE exibir um card de endereço (componente `AddressCard`) quando `delivery === 'entrega'`.
 - **FR-008**: O `AddressCard` DEVE mostrar o endereço selecionado ou estado vazio com CTA.
 - **FR-009**: A tela `/enderecos` (`AddressPage`) DEVE permitir: listar, adicionar (até 2), remover endereços.
-- **FR-010**: O formulário de endereço DEVE ter validação client-side (rua, número, bairro obrigatórios; complemento opcional).
+- **FR-010**: O formulário de endereço DEVE ter validação client-side (rua, número obrigatórios; complemento e ponto de referência opcionais).
 - **FR-011**: O `WhatsAppButton`/`formatWhatsAppMessage` DEVE incluir endereço formatado na mensagem quando `delivery === 'entrega'`.
 - **FR-012**: O `CartSummary` no carrinho DEVE ajustar o label da taxa conforme o modo: "Retirada: Grátis" vs "Taxa de entrega: R$ X".
 - **FR-013**: O App DEVE ter rota `/enderecos` registrada no React Router.
@@ -110,7 +110,7 @@ Quando o cliente finaliza o pedido com "Entrega", a mensagem do WhatsApp inclui 
 
 ### Key Entities
 
-- **Address**: `{ id: string, rua: string, numero: string, bairro: string, complemento: string }` — persistido em localStorage.
+- **Address**: `{ id: string, rua: string, numero: string, complemento: string, pontoReferencia: string }` — persistido em localStorage.
 - **AddressState**: `{ addresses: Address[], selectedId: string | null }` — gerenciado por useReducer.
 - **CartState** (extensão): ganha `selectedAddressId: string | null`.
 
@@ -134,7 +134,7 @@ Quando o cliente finaliza o pedido com "Entrega", a mensagem do WhatsApp inclui 
 - A sincronização entre contexts é feita via `selectedAddressId` no `CartState` — o `CartContext` NÃO gerencia endereços, apenas referencia qual está ativo no momento.
 - O cliente acessa `/enderecos` pelo checkout (botão no AddressCard) e potencialmente pelo footer/nav (a definir).
 - O formulário de endereço é exibido inline (expansão) ou como modal — decisão de implementação a cargo do engenheiro.
-- Campos de endereço são em português (rua, número, bairro, complemento) para alinhar com o público-alvo.
+- Campos de endereço são em português (rua, número, complemento, ponto de referência) para alinhar com o público-alvo.
 - O endereço NÃO bloqueia a finalização do pedido — se o cliente selecionar "Entrega" sem endereço, o pedido ainda pode ser enviado com "Endereço: *a informar*" no WhatsApp.
 - Nenhuma mudança no `menu.json`, `PizzaBuilder`, `FlavorSelector`, `CartItem`, `CartPage`, `MenuPage`, `PaymentSelector`, `OrderSummary`, `EmptyCart`, `Layout` (exceto adição de rota `/enderecos` no roteador e possível link no footer).
 
