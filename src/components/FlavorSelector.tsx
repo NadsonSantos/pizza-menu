@@ -6,11 +6,12 @@ import { useMenu } from '../context/MenuContext';
 interface Props {
   grupos: { categoria: Categoria; sabores: Sabor[] }[];
   categorias: Categoria[];
+  preselectedSabor?: Sabor;
   onConfirm: (sabores: Sabor[], observacao: string) => void;
 }
 
-export default function FlavorSelector({ grupos, categorias, onConfirm }: Props) {
-  const [selected, setSelected] = useState<Sabor[]>([]);
+export default function FlavorSelector({ grupos, categorias, preselectedSabor, onConfirm }: Props) {
+  const [selected, setSelected] = useState<Sabor[]>(preselectedSabor ? [preselectedSabor] : []);
   const [observacao, setObservacao] = useState('');
   const { getCategoriaNome } = useMenu();
 
