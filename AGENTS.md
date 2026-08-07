@@ -57,8 +57,8 @@ O Hermes **não tem slash commands nativos** para spec-kit. Em vez disso, digite
 - `speckit.git.validate` — Valida configuração git
 
 <!-- SPECKIT START -->
-Current plan: `specs/004-entrega-opcional-enderecos/plan.md`
-Previous plan: `specs/003-fluxo-cardapio-unico/plan.md`
+Current plan: `specs/005-tema-visual-re-pizzas/plan.md`
+Previous plan: `specs/004-entrega-opcional-enderecos/plan.md`
 Implementation plan: `.hermes/plans/2025-07-28_195900-mvp-cardapio-pizzaria.md`
 <!-- SPECKIT END -->
 

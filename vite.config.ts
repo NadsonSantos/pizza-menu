@@ -11,10 +11,10 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['icon-192.png', 'icon-512.png', 'offline.html'],
       manifest: {
-        name: 'Cardápio Digital de Pizzaria',
+        name: "Rê Pizza's — Cardápio Digital",
         short_name: 'Cardápio',
         description: 'Cardápio digital de pizzaria — Monte seu pedido e envie pelo WhatsApp',
-        theme_color: '#dc2626',
+        theme_color: '#EF8A1F',
         background_color: '#ffffff',
         display: 'standalone',
         orientation: 'portrait',
@@ -25,7 +25,7 @@ export default defineConfig({
         ],
       },
       workbox: {
-        globPatterns: ['**/*.{js,css,html,ico,png,svg,json}'],
+        globPatterns: ['**/*.{js,css,html,ico,png,jpeg,jpg,svg,json}'],
         runtimeCaching: [
           {
             urlPattern: /\/menu\.json$/,
