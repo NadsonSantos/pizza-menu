@@ -2,7 +2,7 @@ import { useCart } from '../context/CartContext';
 import { formatCurrency } from '../utils/pricing';
 
 export default function CartSummary() {
-  const { subtotal, total } = useCart();
+  const { subtotal } = useCart();
 
   return (
     <div className="bg-white rounded-xl border border-gray-200 p-4 space-y-2 text-sm">
@@ -11,7 +11,7 @@ export default function CartSummary() {
       </div>
       <hr className="border-gray-100" />
       <div className="flex justify-between font-bold text-gray-900 text-base">
-        <span>Total</span><span className="text-red-600">{formatCurrency(total)}</span>
+        <span>Total</span><span className="text-red-600">{formatCurrency(subtotal)}</span>
       </div>
     </div>
   );
