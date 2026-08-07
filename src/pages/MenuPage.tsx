@@ -45,14 +45,14 @@ export default function MenuPage() {
   return (
     <div className="pb-8">
       {/* Sticky Nav — FR-015: fixa abaixo do header do app (~56px), sem sobrepor o z-50 do Layout */}
-      <nav className="sticky top-[56px] z-40 bg-gray-50/95 backdrop-blur-sm border-b border-gray-200 -mx-4 px-4 py-2 mb-4 flex gap-2 overflow-x-auto scrollbar-none">
+      <nav className="sticky top-[56px] z-40 bg-brand-50/95 backdrop-blur-sm border-b border-gray-200 -mx-4 px-4 py-2 mb-4 flex gap-2 overflow-x-auto scrollbar-none">
         {menu.categorias.map(cat => (
           <button
             key={cat.id}
             onClick={() => scrollTo(cat.id)}
             className={`px-4 py-2 rounded-full whitespace-nowrap text-sm font-medium transition-all cursor-pointer ${
               activeCat === cat.id
-                ? 'bg-red-600 text-white shadow-md'
+                ? 'bg-brand-500 text-white shadow-md'
                 : 'bg-white text-gray-600 border border-gray-200 hover:bg-gray-50'
             }`}
           >
@@ -63,7 +63,7 @@ export default function MenuPage() {
           onClick={() => scrollTo('bebidas')}
           className={`px-4 py-2 rounded-full whitespace-nowrap text-sm font-medium transition-all cursor-pointer ${
             activeCat === 'bebidas'
-              ? 'bg-red-600 text-white shadow-md'
+              ? 'bg-brand-500 text-white shadow-md'
               : 'bg-white text-gray-600 border border-gray-200 hover:bg-gray-50'
           }`}
         >
@@ -81,7 +81,7 @@ export default function MenuPage() {
         >
           <div className="flex items-center justify-between mb-3">
             <h2 className="text-lg font-bold text-gray-900">{cat.nome}</h2>
-            <span className="text-sm font-bold text-red-600">{formatCurrency(cat.preco)}</span>
+            <span className="text-sm font-bold text-brand-600">{formatCurrency(cat.preco)}</span>
           </div>
           <div className="grid grid-cols-2 gap-3">
             {menu.sabores.filter(s => s.categoria_id === cat.id).map(s => (
@@ -94,7 +94,7 @@ export default function MenuPage() {
                 <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-lg mb-2">🍕</div>
                 <h3 className="font-semibold text-gray-900 text-sm">{s.nome}</h3>
                 <p className="text-[10px] text-gray-400 mt-0.5 line-clamp-2">{s.descricao}</p>
-                <p className="text-[11px] text-red-600 font-medium mt-1">Montar →</p>
+                <p className="text-[11px] text-brand-600 font-medium mt-1">Montar →</p>
               </button>
             ))}
           </div>
@@ -153,10 +153,10 @@ function LoadingSkeleton() {
 
 function ErrorBox({ message }: { message: string }) {
   return (
-    <div className="bg-red-50 border border-red-200 rounded-xl p-6 text-center">
+    <div className="bg-brand-50 border border-brand-200 rounded-xl p-6 text-center">
       <p className="text-3xl mb-3">⚠️</p>
-      <p className="font-semibold text-red-700 mb-1">Erro ao carregar o cardápio</p>
-      <p className="text-sm text-red-600">{message}</p>
+      <p className="font-semibold text-brand-700 mb-1">Erro ao carregar o cardápio</p>
+      <p className="text-sm text-brand-600">{message}</p>
     </div>
   );
 }

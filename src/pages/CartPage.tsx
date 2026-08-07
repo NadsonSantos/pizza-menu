@@ -23,7 +23,7 @@ export default function CartPage() {
 
       <Link
         to="/finalizar"
-        className="block w-full bg-red-600 text-white py-3 rounded-xl font-semibold text-sm text-center hover:bg-red-700 active:scale-[0.98] transition-all"
+        className="block w-full bg-brand-500 text-white py-3 rounded-xl font-semibold text-sm text-center hover:bg-brand-600 active:scale-[0.98] transition-all"
       >
         Finalizar Pedido →
       </Link>

@@ -24,7 +24,7 @@ export default function AddressCard() {
         <button
           type="button"
           onClick={handleNavigate}
-          className="w-full bg-red-600 text-white py-2.5 rounded-xl font-semibold text-sm hover:bg-red-700 active:scale-[0.98] transition-all cursor-pointer"
+          className="w-full bg-brand-500 text-white py-2.5 rounded-xl font-semibold text-sm hover:bg-brand-600 active:scale-[0.98] transition-all cursor-pointer"
         >
           ➕ Adicionar endereço
         </button>

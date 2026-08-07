@@ -16,7 +16,7 @@ export default function CartItem({ item }: { item: CartItemType }) {
         <button
           type="button"
           onClick={() => dispatch({ type: 'REMOVE_ITEM', id: item.id })}
-          className="text-gray-300 hover:text-red-500 text-lg transition-colors cursor-pointer"
+          className="text-gray-300 hover:text-brand-500 text-lg transition-colors cursor-pointer"
           aria-label="Remover"
         >
           ✕

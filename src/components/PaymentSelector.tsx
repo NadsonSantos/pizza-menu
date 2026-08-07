@@ -19,7 +19,7 @@ export default function PaymentSelector() {
             onClick={() => dispatch({ type: 'SET_PAYMENT', method: o.value })}
             className={`p-3 rounded-xl border-2 text-sm font-medium transition-all cursor-pointer ${
               state.payment === o.value
-                ? 'border-red-500 bg-red-50 text-red-700'
+                ? 'border-brand-500 bg-brand-50 text-brand-700'
                 : 'border-gray-200 bg-white text-gray-600 hover:border-gray-300'
             }`}
           >
@@ -38,7 +38,7 @@ export default function PaymentSelector() {
             placeholder="Ex: R$ 100"
             value={state.troco}
             onChange={e => dispatch({ type: 'SET_TROCO', troco: e.target.value })}
-            className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-500/40"
+            className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500/40"
           />
         </div>
       )}

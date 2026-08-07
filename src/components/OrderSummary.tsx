@@ -34,7 +34,7 @@ export default function OrderSummary() {
       )}
       <hr className="border-gray-200" />
       <div className="flex justify-between font-bold text-gray-900 text-base">
-        <span>Total</span><span className="text-red-600">{formatCurrency(total)}</span>
+        <span>Total</span><span className="text-brand-600">{formatCurrency(total)}</span>
       </div>
     </div>
   );

@@ -35,7 +35,7 @@ export default function FlavorSelector({ grupos, categorias, preselectedSabor, o
         </span>
         {precoInfo && (
           <div className="text-right">
-            <span className="text-sm font-bold text-red-600">{formatCurrency(precoInfo.total)}</span>
+            <span className="text-sm font-bold text-brand-600">{formatCurrency(precoInfo.total)}</span>
             {precoInfo.acrescimo > 0 && (
               <span className="text-[10px] text-gray-400 block">(+R$ 5,00 3º sabor)</span>
             )}
@@ -60,13 +60,13 @@ export default function FlavorSelector({ grupos, categorias, preselectedSabor, o
                   disabled={maxReached && !isSelected}
                   className={`text-left p-3 rounded-xl border-2 transition-all duration-150 ${
                     isSelected
-                      ? 'border-red-500 bg-red-50 ring-1 ring-red-500/30'
+                      ? 'border-brand-500 bg-brand-50 ring-1 ring-brand-500/30'
                       : 'border-gray-200 bg-white hover:border-gray-300 active:scale-[0.98]'
                   } ${maxReached && !isSelected ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer'}`}
                 >
                   <div className="flex items-start gap-2">
                     <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs shrink-0 ${
-                      isSelected ? 'bg-red-500 text-white' : 'bg-gray-100 text-gray-400'
+                      isSelected ? 'bg-brand-500 text-white' : 'bg-gray-100 text-gray-400'
                     }`}>
                       {isSelected ? '✓' : '🍕'}
                     </div>
@@ -89,14 +89,14 @@ export default function FlavorSelector({ grupos, categorias, preselectedSabor, o
         placeholder="Observação (ex: sem cebola)"
         value={observacao}
         onChange={e => setObservacao(e.target.value)}
-        className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-500/40 focus:border-red-400"
+        className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500/40 focus:border-brand-400"
       />
 
       <button
         type="button"
         onClick={() => { if (selected.length > 0) { onConfirm(selected, observacao); setSelected([]); setObservacao(''); } }}
         disabled={selected.length === 0}
-        className="w-full bg-red-600 text-white py-3 rounded-xl font-semibold text-sm hover:bg-red-700 disabled:opacity-40 disabled:cursor-not-allowed active:scale-[0.98] transition-all cursor-pointer"
+        className="w-full bg-brand-500 text-white py-3 rounded-xl font-semibold text-sm hover:bg-brand-600 disabled:opacity-40 disabled:cursor-not-allowed active:scale-[0.98] transition-all cursor-pointer"
       >
         Adicionar ao carrinho {precoInfo ? `— ${formatCurrency(precoInfo.total)}` : ''}
       </button>

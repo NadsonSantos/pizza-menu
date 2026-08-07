@@ -87,7 +87,7 @@ export default function AddressPage() {
               <li key={a.id}>
                 <div
                   className={`bg-white rounded-xl border-2 p-4 flex items-start gap-3 ${
-                    isSelected ? 'border-red-500' : 'border-gray-200'
+                    isSelected ? 'border-brand-500' : 'border-gray-200'
                   }`}
                 >
                   <button
@@ -107,7 +107,7 @@ export default function AddressPage() {
                     type="button"
                     onClick={() => handleRemove(a.id, `${a.rua}, ${a.numero}`)}
                     aria-label={`Excluir endereço ${a.rua}, ${a.numero}`}
-                    className="shrink-0 text-gray-400 hover:text-red-600 p-1.5 rounded-lg hover:bg-red-50 transition-colors cursor-pointer"
+                    className="shrink-0 text-gray-400 hover:text-brand-600 p-1.5 rounded-lg hover:bg-brand-50 transition-colors cursor-pointer"
                   >
                     🗑️
                   </button>
@@ -126,7 +126,7 @@ export default function AddressPage() {
           className={`w-full py-3 rounded-xl font-semibold text-sm transition-all ${
             atLimit
               ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-              : 'bg-red-600 text-white hover:bg-red-700 active:scale-[0.98] cursor-pointer'
+              : 'bg-brand-500 text-white hover:bg-brand-600 active:scale-[0.98] cursor-pointer'
           }`}
         >
           {atLimit ? 'Limite de 2 endereços atingido' : '➕ Adicionar endereço'}
@@ -149,7 +149,7 @@ export default function AddressPage() {
 
           <div>
             <label htmlFor="addr-rua" className="block text-xs font-medium text-gray-600 mb-1">
-              Rua <span className="text-red-500">*</span>
+              Rua <span className="text-brand-500">*</span>
             </label>
             <input
               id="addr-rua"
@@ -160,10 +160,10 @@ export default function AddressPage() {
               autoComplete="address-line1"
               aria-invalid={!!errors.rua}
               aria-describedby={errors.rua ? 'addr-rua-error' : undefined}
-              className="w-full border border-gray-300 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-red-500/50 focus:border-red-500"
+              className="w-full border border-gray-300 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500/50 focus:border-brand-500"
             />
             {errors.rua && (
-              <p id="addr-rua-error" role="alert" className="text-xs text-red-600 mt-1">
+              <p id="addr-rua-error" role="alert" className="text-xs text-brand-600 mt-1">
                 {errors.rua}
               </p>
             )}
@@ -171,7 +171,7 @@ export default function AddressPage() {
 
           <div>
             <label htmlFor="addr-numero" className="block text-xs font-medium text-gray-600 mb-1">
-              Número <span className="text-red-500">*</span>
+              Número <span className="text-brand-500">*</span>
             </label>
             <input
               id="addr-numero"
@@ -183,10 +183,10 @@ export default function AddressPage() {
               autoComplete="address-line2"
               aria-invalid={!!errors.numero}
               aria-describedby={errors.numero ? 'addr-numero-error' : undefined}
-              className="w-full border border-gray-300 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-red-500/50 focus:border-red-500"
+              className="w-full border border-gray-300 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500/50 focus:border-brand-500"
             />
             {errors.numero && (
-              <p id="addr-numero-error" role="alert" className="text-xs text-red-600 mt-1">
+              <p id="addr-numero-error" role="alert" className="text-xs text-brand-600 mt-1">
                 {errors.numero}
               </p>
             )}
@@ -203,7 +203,7 @@ export default function AddressPage() {
               onChange={e => setField('complemento', e.target.value)}
               maxLength={LIMITS.complemento}
               autoComplete="address-line3"
-              className="w-full border border-gray-300 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-red-500/50 focus:border-red-500"
+              className="w-full border border-gray-300 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500/50 focus:border-brand-500"
             />
           </div>
 
@@ -217,14 +217,14 @@ export default function AddressPage() {
               value={form.pontoReferencia}
               onChange={e => setField('pontoReferencia', e.target.value)}
               maxLength={LIMITS.pontoReferencia}
-              className="w-full border border-gray-300 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-red-500/50 focus:border-red-500"
+              className="w-full border border-gray-300 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500/50 focus:border-brand-500"
             />
           </div>
 
           <div className="flex gap-2 pt-1">
             <button
               type="submit"
-              className="flex-1 bg-red-600 text-white py-2.5 rounded-xl font-semibold text-sm hover:bg-red-700 active:scale-[0.98] transition-all cursor-pointer"
+              className="flex-1 bg-brand-500 text-white py-2.5 rounded-xl font-semibold text-sm hover:bg-brand-600 active:scale-[0.98] transition-all cursor-pointer"
             >
               Salvar endereço
             </button>
