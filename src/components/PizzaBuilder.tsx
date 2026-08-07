@@ -5,10 +5,11 @@ import { useMenu } from '../context/MenuContext';
 import { calcularPrecoPizza } from '../utils/pricing';
 
 interface Props {
+  preselectedSabor?: Sabor;
   onClose: () => void;
 }
 
-export default function PizzaBuilder({ onClose }: Props) {
+export default function PizzaBuilder({ preselectedSabor, onClose }: Props) {
   const { addItem } = useCart();
   const { menu } = useMenu();
 
@@ -48,6 +49,7 @@ export default function PizzaBuilder({ onClose }: Props) {
         <FlavorSelector
           grupos={grupos}
           categorias={menu.categorias}
+          preselectedSabor={preselectedSabor}
           onConfirm={handleConfirm}
         />
       </div>

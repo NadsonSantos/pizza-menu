@@ -3,7 +3,7 @@ import { useMenu } from '../context/MenuContext';
 import { useCart } from '../context/CartContext';
 import PizzaBuilder from '../components/PizzaBuilder';
 import DrinkCard from '../components/DrinkCard';
-import { Bebida } from '../types/menu';
+import { Bebida, Sabor } from '../types/menu';
 import { formatCurrency } from '../utils/pricing';
 
 export default function MenuPage() {
@@ -11,6 +11,7 @@ export default function MenuPage() {
   const { addItem } = useCart();
   const [activeCat, setActiveCat] = useState<string | null>(null);
   const [pizzaBuilderOpen, setPizzaBuilderOpen] = useState(false);
+  const [preselectedSabor, setPreselectedSabor] = useState<Sabor | undefined>();
   const sectionRefs = useRef<Map<string, HTMLElement>>(new Map());
 
   // MUST be before early returns to keep hook order stable
@@ -87,7 +88,7 @@ export default function MenuPage() {
               <button
                 key={s.id}
                 type="button"
-                onClick={() => setPizzaBuilderOpen(true)}
+                onClick={() => { setPreselectedSabor(s); setPizzaBuilderOpen(true); }}
                 className="bg-white rounded-xl border border-gray-200 p-3 text-left hover:border-gray-300 active:scale-[0.98] transition-all cursor-pointer"
               >
                 <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-lg mb-2">🍕</div>
@@ -114,7 +115,10 @@ export default function MenuPage() {
 
       {/* Pizza Builder Modal */}
       {pizzaBuilderOpen && (
-        <PizzaBuilder onClose={() => setPizzaBuilderOpen(false)} />
+        <PizzaBuilder
+          preselectedSabor={preselectedSabor}
+          onClose={() => { setPizzaBuilderOpen(false); setPreselectedSabor(undefined); }}
+        />
       )}
     </div>
   );
