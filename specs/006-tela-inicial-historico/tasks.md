@@ -10,7 +10,9 @@
 
 ## Code Review Tasks (ciclo 1 — 2026-08-11)
 
-- [ ] CR-001 Corrigir links "Ver Cardápio" e "Adicionar mais itens" para apontar para `/cardapio` (usuários elegíveis)
+- [x] CR-001 Corrigir links "Ver Cardápio" e "Adicionar mais itens" para apontar para `/cardapio` (usuários elegíveis)
+
+> ✅ Resolvido — `src/components/EmptyCart.tsx` e `src/pages/CartPage.tsx` agora apontam para `/cardapio`. Demais links para `/` (logo no `Layout`, "Voltar" no `OrderDetailPage`) são intencionais (home).
 
 Contexto:
 A rota `/` passou a ser condicional no App (`src/App.tsx:29`): usuários com pedidos nos últimos 90 dias veem a `HomePage`, novos usuários veem a `MenuPage`. O alias `/cardapio` foi criado para manter acesso direto ao cardápio, e o CTA "Novo Pedido" da HomePage o utiliza corretamente (`src/pages/HomePage.tsx:25`).
@@ -36,6 +38,8 @@ High
 
 - [ ] CR-002 Corrigir composição da branch do PR #5 (contém commits do NAD-5)
 
+> ⏳ Pendente de decisão do PO — o merge do PR #4 (NAD-5) antecede o PR #5; após o merge, o diff do PR #5 fica restrito ao delta NAD-6 sem rebase adicional (a branch já tem `ba55fe2` como ancestral).
+
 Contexto:
 A branch `006-tela-inicial-historico` foi criada sobre a branch do NAD-5 (commit `ba55fe2`), que ainda não foi mergeada — o PR #4 (NAD-5) segue aberto sem revisão. Com isso, o diff do PR #5 inclui 29 arquivos do tema visual do NAD-5 além dos 13 do NAD-6.
 
@@ -53,7 +57,9 @@ Medium
 
 ---
 
-- [ ] CR-003 Avaliar reavaliação de elegibilidade após o primeiro pedido na mesma sessão
+- [x] CR-003 Avaliar reavaliação de elegibilidade após o primeiro pedido na mesma sessão
+
+> ✅ Implementado — decisão: reavaliar ao navegar para `/`. `App.tsx` extrai a checagem para o componente `HomeRoute`, que remonta a cada entrada na rota; usuário que finaliza o 1º pedido vê a `HomePage` ao voltar para `/` na mesma sessão.
 
 Contexto:
 A elegibilidade é calculada uma vez no render do `App` após a splash (`src/App.tsx:24`, `hasRecentOrders()`). Para um usuário NOVO que finaliza o primeiro pedido, o `order_history` é gravado (`WhatsAppButton`), mas o `App` não re-renderiza por navegação — `hasHistory` permanece `false` na sessão atual.
@@ -71,7 +77,9 @@ Low
 
 ---
 
-- [ ] CR-004 Versionar smoke test da lógica `orderHistory`
+- [x] CR-004 Versionar smoke test da lógica `orderHistory`
+
+> ✅ Resolvido — infraestrutura de testes adicionada: `vitest` (devDependency), script `npm test` e `src/utils/orderHistory.test.ts` (9 testes cobrindo leitura vazia, roundtrip, filtro 90d, ordenação desc, JSON corrompido, registros/timestamps inválidos, quota excedida, pedido vazio). Resultado: 9/9 passando.
 
 Contexto:
 A lógica de `src/utils/orderHistory.ts` (validação defensiva, filtro 90d, ordenação, descarte de corrompidos) foi validada com um smoke test de 14 asserts executado manualmente pelo Engenheiro, mas o teste não foi versionado. O projeto não possui infraestrutura de testes (sem runner/config no `package.json`).

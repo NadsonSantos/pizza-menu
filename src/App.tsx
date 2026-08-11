@@ -10,6 +10,20 @@ import AddressPage from './pages/AddressPage';
 import SplashScreen from './components/SplashScreen';
 import { hasRecentOrders } from './utils/orderHistory';
 
+/**
+ * Rota `/` condicional (NAD-6): usuários com pedidos nos últimos 90 dias
+ * veem a HomePage personalizada; novos usuários mantêm o fluxo atual.
+ *
+ * CR-003: a elegibilidade é reavaliada a cada entrada na rota (mount do
+ * componente), e não apenas uma vez pós-splash. Assim, um usuário novo que
+ * finaliza o primeiro pedido na sessão passa a ver a HomePage ao voltar
+ * para `/` — sem depender de reload.
+ */
+function HomeRoute() {
+  const hasHistory = hasRecentOrders();
+  return hasHistory ? <HomePage /> : <MenuPage />;
+}
+
 export default function App() {
   const [showSplash, setShowSplash] = useState(
     () => sessionStorage.getItem('splash_shown') === null
@@ -19,14 +33,10 @@ export default function App() {
     return <SplashScreen onFinish={() => setShowSplash(false)} />;
   }
 
-  // NAD-6: usuários com pedidos nos últimos 90 dias vão para a HomePage
-  // personalizada; novos usuários mantêm o fluxo atual (MenuPage direto).
-  const hasHistory = hasRecentOrders();
-
   return (
     <Routes>
       <Route element={<Layout />}>
-        <Route path="/" element={hasHistory ? <HomePage /> : <MenuPage />} />
+        <Route path="/" element={<HomeRoute />} />
         <Route path="/cardapio" element={<MenuPage />} />
         <Route path="/pedido/:id" element={<OrderDetailPage />} />
         <Route path="/carrinho" element={<CartPage />} />
