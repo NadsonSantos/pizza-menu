@@ -28,7 +28,7 @@ export default function CartPage() {
         Finalizar Pedido →
       </Link>
 
-      <Link to="/" className="block text-center text-sm text-gray-400 hover:text-gray-600">
+      <Link to="/cardapio" className="block text-center text-sm text-gray-400 hover:text-gray-600">
         ← Adicionar mais itens
       </Link>
     </div>

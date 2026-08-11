@@ -3,6 +3,7 @@ import { useMenu } from '../context/MenuContext';
 import { useAddress } from '../context/AddressContext';
 import { formatWhatsAppMessage, createWhatsAppLink } from '../utils/whatsapp';
 import { formatAddress } from '../utils/address';
+import { saveOrder } from '../utils/orderHistory';
 
 export default function WhatsAppButton() {
   const { state, dispatch, subtotal, taxaEntrega, total } = useCart();
@@ -18,6 +19,23 @@ export default function WhatsAppButton() {
     const msg = formatWhatsAppMessage(state, menu.pizzaria.nome, subtotal, taxaEntrega, total, endereco);
     const url = createWhatsAppLink(menu.pizzaria.whatsapp, msg);
     window.open(url, '_blank');
+
+    // NAD-6: persiste o pedido no histórico ANTES de limpar o carrinho (FR-001)
+    if (state.items.length > 0) {
+      saveOrder({
+        id: crypto.randomUUID(),
+        timestamp: new Date().toISOString(),
+        items: state.items,
+        delivery: state.delivery,
+        payment: state.payment,
+        troco: state.troco,
+        addressId: state.selectedAddressId,
+        subtotal,
+        taxaEntrega,
+        total,
+      });
+    }
+
     dispatch({ type: 'CLEAR_CART' });
   };
 
