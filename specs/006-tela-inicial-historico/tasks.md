@@ -36,9 +36,9 @@ High
 
 ---
 
-- [ ] CR-002 Corrigir composição da branch do PR #5 (contém commits do NAD-5)
+- [x] CR-002 Corrigir composição da branch do PR #5 (contém commits do NAD-5)
 
-> ⏳ Pendente de decisão do PO — o merge do PR #4 (NAD-5) antecede o PR #5; após o merge, o diff do PR #5 fica restrito ao delta NAD-6 sem rebase adicional (a branch já tem `ba55fe2` como ancestral).
+> ✅ Resolvido — PR #4 (NAD-5) mergeado na `main` pelo PO em `7e9e8e3`. Diff do PR #5 agora restrito ao delta NAD-6 (22 arquivos).
 
 Contexto:
 A branch `006-tela-inicial-historico` foi criada sobre a branch do NAD-5 (commit `ba55fe2`), que ainda não foi mergeada — o PR #4 (NAD-5) segue aberto sem revisão. Com isso, o diff do PR #5 inclui 29 arquivos do tema visual do NAD-5 além dos 13 do NAD-6.
