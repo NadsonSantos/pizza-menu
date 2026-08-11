@@ -57,8 +57,8 @@ O Hermes **não tem slash commands nativos** para spec-kit. Em vez disso, digite
 - `speckit.git.validate` — Valida configuração git
 
 <!-- SPECKIT START -->
-Current plan: `specs/005-tema-visual-re-pizzas/plan.md`
-Previous plan: `specs/004-entrega-opcional-enderecos/plan.md`
+Current plan: `specs/006-tela-inicial-historico/plan.md`
+Previous plan: `specs/005-tema-visual-re-pizzas/plan.md`
 Implementation plan: `.hermes/plans/2025-07-28_195900-mvp-cardapio-pizzaria.md`
 <!-- SPECKIT END -->
 
@@ -113,3 +113,5 @@ Agentes do workspace Nadson-Work: **Product Owner** (orquestrador), **Front-End 
 - Somente o **PO** comunica o usuário diretamente; o Code Reviewer só o menciona no escalonamento.
 - Encerramento da SPEC só é completo após: aprovação final do PO + merge na main + fechamento da issue.
 - Menções em comentários: `[@Nome](mention://agent/<uuid>)` (texto puro `@Nome` não dispara).
+
+

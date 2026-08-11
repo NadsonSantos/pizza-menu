@@ -30,6 +30,15 @@ function cartReducer(state: CartState, action: CartAction): CartState {
       return { ...state, selectedAddressId: action.id };
     case 'CLEAR_CART':
       return initialState;
+    case 'ORDER_FROM_HISTORY':
+      // Substitui o carrinho atual pelos dados do pedido (sem merge).
+      // payment/troco resetados — usuário seleciona novamente no checkout.
+      return {
+        ...initialState,
+        items: action.order.items.map(item => ({ ...item })),
+        delivery: action.order.delivery,
+        selectedAddressId: action.order.addressId,
+      };
     default:
       return state;
   }

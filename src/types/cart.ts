@@ -13,6 +13,19 @@ export interface CartItem {
 export type DeliveryMode = 'entrega' | 'retirada';
 export type PaymentMethod = 'dinheiro' | 'cartao' | 'pix';
 
+export interface OrderRecord {
+  id: string;
+  timestamp: string;
+  items: CartItem[];
+  delivery: DeliveryMode;
+  payment: PaymentMethod | null;
+  troco: string;
+  addressId: string | null;
+  subtotal: number;
+  taxaEntrega: number;
+  total: number;
+}
+
 export interface CartState {
   items: CartItem[];
   delivery: DeliveryMode;
@@ -29,4 +42,5 @@ export type CartAction =
   | { type: 'SET_PAYMENT'; method: PaymentMethod }
   | { type: 'SET_TROCO'; troco: string }
   | { type: 'SET_ADDRESS'; id: string | null }
-  | { type: 'CLEAR_CART' };
+  | { type: 'CLEAR_CART' }
+  | { type: 'ORDER_FROM_HISTORY'; order: OrderRecord };
