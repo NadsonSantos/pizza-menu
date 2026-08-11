@@ -1,1 +1,21 @@
 @import "tailwindcss";
+
+@theme {
+  /* Rê Pizza's — brand palette (laranja) */
+  --color-brand-50: #FFF6EC;
+  --color-brand-100: #FDE4CE;
+  --color-brand-200: #FAC89A;
+  --color-brand-300: #F7AB65;
+  --color-brand-400: #F48F32;
+  --color-brand-500: #EF8A1F;
+  --color-brand-600: #C96F16;
+  --color-brand-700: #A05410;
+  --color-brand-800: #783C0F;
+  --color-brand-900: #502807;
+
+  /* Rê Pizza's — accent palette (ilustração/destaque) */
+  --color-accent-cheese: #F6C453;
+  --color-accent-pepperoni: #D8492F;
+  --color-accent-tomato: #E2664A;
+  --color-accent-basil: #5B8C4A;
+}

@@ -11,7 +11,7 @@ export default function CartSummary() {
       </div>
       <hr className="border-gray-100" />
       <div className="flex justify-between font-bold text-gray-900 text-base">
-        <span>Total</span><span className="text-red-600">{formatCurrency(subtotal)}</span>
+        <span>Total</span><span className="text-brand-600">{formatCurrency(subtotal)}</span>
       </div>
     </div>
   );
