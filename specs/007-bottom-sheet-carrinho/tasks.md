@@ -262,3 +262,43 @@ Critério de aceite:
 
 Prioridade:
 Low
+
+---
+
+## Code Review — Ciclo 2 (PR #6)
+
+Tasks de correção adicionadas pelo Code Review Agent em 2026-08-12. Não remover nem alterar tasks concluídas acima.
+
+- [x] CR-005 Remover o bloco MULTICA-RUNTIME do Front-End Engineer do `AGENTS.md`
+
+Contexto:
+O commit `e4ab152` alterou o `AGENTS.md` além da correção da tabela Tech Stack (CR-003): adicionou ~333 linhas contendo o bloco `<!-- BEGIN MULTICA-RUNTIME (auto-managed; do not edit) -->` inteiro do agente Front-End Engineer (identidade "You are: Front-End Engineer", UUID `42ae8324-...`, lista de comandos do CLI multica, sintaxe de menções, regras de pipeline). Antes do commit, `AGENTS.md` não continha nenhuma ocorrência de `MULTICA-RUNTIME` (verificado em `b5d6f32` e `main`).
+
+Problema:
+`AGENTS.md` é o arquivo de contexto compartilhado do repositório, lido por todos os agentes do projeto. Commitar o bloco de runtime de um agente específico (identidade, UUID interno, comandos de CLI) no repositório: (1) está fora do escopo do CR-003, que pedia apenas as versões de stack; (2) contamina o doc compartilhado com instruções de identidade conflitantes ("You are: Front-End Engineer") que confundem os demais agentes (PO, Code Reviewer, próximos Engineers); (3) expõe UUIDs internos do workspace em um arquivo versionado.
+
+Critério de aceite:
+
+- `AGENTS.md` no branch contém apenas a correção da tabela Tech Stack (React 19 / RR 7 / Tailwind 4 / Vite 6), sem o bloco `<!-- BEGIN MULTICA-RUNTIME ... -->`
+- `git diff main...branch -- AGENTS.md` mostra somente a atualização da tabela
+
+Prioridade:
+High
+
+---
+
+- [x] CR-006 Commitar os artefatos de spec do NAD-7 no branch (spec.md, data-model.md, research.md, quickstart.md, checklists/)
+
+Contexto:
+No padrão do repositório (NAD-6 em `main`), todos os artefatos da feature são versionados: `specs/006-tela-inicial-historico/` contém `spec.md`, `plan.md`, `tasks.md`, `data-model.md`, `research.md`, `quickstart.md`, `checklists/` e `contracts/`. No branch `007-bottom-sheet-carrinho`, apenas `plan.md` e `tasks.md` foram commitados; `spec.md`, `data-model.md`, `research.md`, `quickstart.md` e `checklists/` estão untracked (nunca entraram no PR #6).
+
+Problema:
+A spec.md (contrato da feature validado no Code Review) e os artefatos de planejamento não estão no PR. Após o merge, esses documentos ficariam fora do histórico do repositório, quebrando a rastreabilidade SDD e o padrão já adotado no NAD-6.
+
+Critério de aceite:
+
+- `spec.md`, `data-model.md`, `research.md`, `quickstart.md` e `checklists/` commitados no branch e visíveis no PR #6
+- `git ls-tree <branch> -- specs/007-bottom-sheet-carrinho/` lista todos os artefatos, como no NAD-6
+
+Prioridade:
+Medium
