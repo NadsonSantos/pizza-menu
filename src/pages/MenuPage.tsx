@@ -1,18 +1,24 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { useMenu } from '../context/MenuContext';
 import { useCart } from '../context/CartContext';
 import PizzaBuilder from '../components/PizzaBuilder';
 import DrinkCard from '../components/DrinkCard';
+import CartBottomSheet from '../components/CartBottomSheet';
 import { Bebida, Sabor } from '../types/menu';
 import { formatCurrency } from '../utils/pricing';
 
 export default function MenuPage() {
   const { menu, loading, error } = useMenu();
-  const { addItem } = useCart();
+  const { addItem, itemCount, total } = useCart();
   const [activeCat, setActiveCat] = useState<string | null>(null);
   const [pizzaBuilderOpen, setPizzaBuilderOpen] = useState(false);
   const [preselectedSabor, setPreselectedSabor] = useState<Sabor | undefined>();
   const sectionRefs = useRef<Map<string, HTMLElement>>(new Map());
+
+  // Bottom Sheet (NAD-7): montado enquanto houver itens ou durante a animação de saída
+  const [sheetMounted, setSheetMounted] = useState(false);
+  const [sheetHeight, setSheetHeight] = useState(0);
+  const sheetRef = useRef<HTMLDivElement>(null);
 
   // MUST be before early returns to keep hook order stable
   useEffect(() => {
@@ -34,6 +40,28 @@ export default function MenuPage() {
     return () => observer.disconnect();
   }, [menu]);
 
+  // FR-001/FR-002: monta o Bottom Sheet ao adicionar o 1º item; o unmount
+  // acontece via onExitComplete (após a animação de saída — FR-010).
+  useEffect(() => {
+    if (itemCount > 0) setSheetMounted(true);
+  }, [itemCount]);
+
+  const handleSheetExitComplete = useCallback(() => setSheetMounted(false), []);
+
+  // FR-008: mede a altura real do Bottom Sheet para o padding dinâmico da lista
+  useEffect(() => {
+    if (!sheetMounted || !sheetRef.current) {
+      setSheetHeight(0);
+      return;
+    }
+    const el = sheetRef.current;
+    const measure = () => setSheetHeight(el.getBoundingClientRect().height);
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [sheetMounted]);
+
   if (loading) return <LoadingSkeleton />;
   if (error) return <ErrorBox message={error} />;
   if (!menu) return null;
@@ -43,7 +71,10 @@ export default function MenuPage() {
   };
 
   return (
-    <div className="pb-8">
+    <div
+      className="pb-8 transition-[padding-bottom] duration-300 ease-out"
+      style={sheetMounted ? { paddingBottom: `calc(2rem + ${sheetHeight}px)` } : undefined}
+    >
       {/* Sticky Nav — FR-015: fixa abaixo do header do app (~56px), sem sobrepor o z-50 do Layout */}
       <nav className="sticky top-[56px] z-40 bg-brand-50/95 backdrop-blur-sm border-b border-gray-200 -mx-4 px-4 py-2 mb-4 flex gap-2 overflow-x-auto scrollbar-none">
         {menu.categorias.map(cat => (
@@ -118,6 +149,16 @@ export default function MenuPage() {
         <PizzaBuilder
           preselectedSabor={preselectedSabor}
           onClose={() => { setPizzaBuilderOpen(false); setPreselectedSabor(undefined); }}
+        />
+      )}
+
+      {/* Bottom Sheet do Carrinho — FR-001: fixo no rodapé enquanto houver itens no carrinho */}
+      {sheetMounted && (
+        <CartBottomSheet
+          ref={sheetRef}
+          itemCount={itemCount}
+          total={total}
+          onExitComplete={handleSheetExitComplete}
         />
       )}
     </div>

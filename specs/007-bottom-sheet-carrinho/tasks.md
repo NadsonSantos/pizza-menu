@@ -1,0 +1,186 @@
+# Tasks: Bottom Sheet do Carrinho
+
+**Input**: Design documents from `/specs/007-bottom-sheet-carrinho/`
+
+**Prerequisites**: plan.md ✅, spec.md ✅, research.md ✅, data-model.md ✅, quickstart.md ✅
+
+**Tests**: Not requested in the feature specification — no test tasks included.
+
+**Organization**: Tasks are grouped by user story to enable independent implementation and testing of each story.
+
+## Format: `[ID] [P?] [Story] Description`
+
+- **[P]**: Can run in parallel (different files, no dependencies)
+- **[Story]**: Which user story this task belongs to (e.g., US1, US2, US3)
+- Include exact file paths in descriptions
+
+## Path Conventions
+
+- **Single project**: `src/` at repository root
+- Paths shown below reflect actual project structure from plan.md
+
+---
+
+## Phase 1: Setup (Shared Infrastructure)
+
+**Purpose**: Verify project state and existing dependencies
+
+- [X] T001 Verify project builds successfully with `npm run build` and CartContext API (`itemCount`, `total`) is accessible via `useCart()` hook
+
+**Checkpoint**: Build passes, CartContext API confirmed ready for consumption.
+
+---
+
+## Phase 2: Foundational (Blocking Prerequisites)
+
+**Purpose**: Nenhuma — o CartContext (`src/context/CartContext.tsx`) já existe e provê `itemCount`, `total` e `useCart()`. O projeto já está inicializado com React 18 + Vite 5 + Tailwind 3 + React Router 6. Nenhuma infraestrutura adicional é necessária.
+
+**⚠️ NOTA**: Esta fase está intencionalmente vazia. Todas as dependências para as user stories já estão satisfeitas. Prosseguir diretamente para Phase 3.
+
+**Checkpoint**: N/A — prosseguir imediatamente para implementação das user stories.
+
+---
+
+## Phase 3: User Story 1 - Resumo do Carrinho Sempre Visível (Priority: P1) 🎯 MVP
+
+**Goal**: Componente `CartBottomSheet` fixo no rodapé da MenuPage que exibe contador de itens, valor total e botão "Ver Carrinho". Surge ao adicionar o 1º item, some ao esvaziar o carrinho.
+
+**Independent Test**: Adicionar qualquer item ao carrinho → Bottom Sheet aparece no rodapé com contador e valor total corretos. Remover o último item → Bottom Sheet desaparece. Clicar no card ou botão → navega para `/carrinho`.
+
+### Implementation for User Story 1
+
+- [X] T002 [P] [US1] Create CartBottomSheet component in `src/components/CartBottomSheet.tsx` with fixed bottom positioning (`fixed bottom-0 left-0 right-0 z-30`), safe-area padding (`pb-safe`), item counter with plural (`itemCount === 1 ? '1 item' : '${itemCount} itens'`), total formatted via `formatCurrency(total)` from `src/utils/pricing.ts`, and "Ver Carrinho" button. Accept `itemCount: number` and `total: number` as props.
+
+- [X] T003 [US1] Integrate CartBottomSheet into `src/pages/MenuPage.tsx`: import `CartBottomSheet`, read `itemCount` and `total` from `useCart()`, render `<CartBottomSheet>` conditionally only when `itemCount > 0`.
+
+- [X] T004 [US1] Make entire CartBottomSheet card clickable in `src/components/CartBottomSheet.tsx` — both the card body and the button navigate to `/carrinho` via `useNavigate()` from React Router 6. Button receives `cursor-pointer` and `active:scale-[0.98]` for touch feedback.
+
+- [X] T005 [US1] Verify Bottom Sheet scope in `src/pages/MenuPage.tsx`: confirm `CartBottomSheet` is only rendered inside MenuPage and does NOT appear on other pages (CartPage, OrderHistory, etc.).
+
+**Checkpoint**: User Story 1 fully functional — Bottom Sheet exibe/oculta conforme carrinho, mostra dados corretos, navega ao carrinho. Pode ser testado e entregue como MVP.
+
+---
+
+## Phase 4: User Story 2 - Visualização Completa do Cardápio (Priority: P2)
+
+**Goal**: Adicionar padding-bottom dinâmico na lista de produtos da MenuPage para que o último item não fique escondido atrás do Bottom Sheet.
+
+**Independent Test**: Rolar até o final da lista de bebidas e verificar que o último item está totalmente visível acima do Bottom Sheet, com espaçamento suficiente.
+
+### Implementation for User Story 2
+
+- [X] T006 [US2] Add dynamic bottom padding to the menu list in `src/pages/MenuPage.tsx`: measure `CartBottomSheet` height using `useRef` + `ResizeObserver`, compute `paddingBottom = height + safe-area-inset-bottom`, apply to the outer scroll container div. Replace static `pb-8` with dynamic value when Bottom Sheet is visible.
+
+**Checkpoint**: Todos os itens da lista acessíveis via scroll — nenhum fica permanentemente oculto atrás do Bottom Sheet.
+
+---
+
+## Phase 5: User Story 3 - Transições Suaves (Priority: P3)
+
+**Goal**: Adicionar animação CSS de slide-up (entrada) e slide-down (saída) ao Bottom Sheet com duração de ~300ms.
+
+**Independent Test**: Adicionar primeiro item → Bottom Sheet aparece com slide-up suave. Remover último item → Bottom Sheet desliza para baixo e desaparece. Atualizações de valor/contador são instantâneas (sem animação).
+
+### Implementation for User Story 3
+
+- [X] T007 [US3] Add enter/exit animation to `src/components/CartBottomSheet.tsx`: internal `exiting` state and `height` state via `useRef`. On mount: apply `translate-y-full opacity-0` → trigger reflow → remove classes for slide-up. On `itemCount` transition to 0: set `exiting=true`, apply `translate-y-full opacity-0 transition-all duration-300`, call `onExitComplete` prop on `transitionend`. Use `useEffect` with `itemCount` dependency. Updates to counter/total values are instant (no transition class on text elements).
+
+- [X] T008 [US3] Wire exit callback in `src/pages/MenuPage.tsx`: pass `onExitComplete` to `CartBottomSheet` to fully unmount after animation completes (final cleanup).
+
+**Checkpoint**: Transições suaves implementadas — entrada slide-up ~300ms, saída slide-down ~300ms, atualizações de dados instantâneas.
+
+---
+
+## Phase 6: Polish & Cross-Cutting Concerns
+
+**Purpose**: Final validation and cleanup
+
+- [X] T009 Run full validation per `quickstart.md`: `npm run build` (build check), `npm run dev` (manual smoke test — add item → appears, remove item → disappears, scroll to bottom → no hidden items, click → navigates to cart).
+- [X] T010 [P] Run `npm run test` (if any existing tests) to ensure no regressions from MenuPage changes.
+- [X] T011 Verify all 11 functional requirements (FR-001 to FR-011) from spec.md are satisfied and all 5 success criteria (SC-001 to SC-005) are met.
+
+---
+
+## Dependencies & Execution Order
+
+### Phase Dependencies
+
+- **Setup (Phase 1)**: No dependencies — verify build immediately.
+- **Foundational (Phase 2)**: Intentionally empty — CartContext is ready.
+- **User Story 1 (Phase 3)**: Can start immediately after Phase 1. T003 depends on T002 (component must exist before integration).
+- **User Story 2 (Phase 4)**: Depends on US1 (needs Bottom Sheet rendered to measure height).
+- **User Story 3 (Phase 5)**: Depends on US1 (needs component structure to add animation). Can be done in parallel with US2.
+- **Polish (Phase 6)**: Depends on all user stories being complete.
+
+### User Story Dependencies
+
+- **User Story 1 (P1)**: No dependencies on other stories — core component.
+- **User Story 2 (P2)**: Depends on US1 (Bottom Sheet must exist).
+- **User Story 3 (P3)**: Depends on US1 (Bottom Sheet must exist). Independent from US2.
+
+### Within Each User Story
+
+- US1: T002 (component) → T003 (integration) → T004 (click behavior) → T005 (scope check)
+- US2: T006 standalone (can also run after T003 is done)
+- US3: T007 (animation) → T008 (exit callback wiring)
+
+### Parallel Opportunities
+
+- T002 and T001 can run in parallel (component creation + build verification are independent).
+- US2 (T006) and US3 (T007, T008) can run in parallel after US1 is complete.
+- T009 and T010 can run in parallel during Polish phase.
+
+---
+
+## Parallel Example: User Story 1
+
+```bash
+# Start component creation while build check runs:
+Task: "T001 Verify project builds"
+Task: "T002 [P] [US1] Create CartBottomSheet component in src/components/CartBottomSheet.tsx"
+
+# After T002 completes, integration can start:
+Task: "T003 [US1] Integrate CartBottomSheet into src/pages/MenuPage.tsx"
+```
+
+---
+
+## Implementation Strategy
+
+### MVP First (User Story 1 Only)
+
+1. Complete Phase 1: Setup (T001)
+2. Skip Phase 2 (empty)
+3. Complete Phase 3: User Story 1 (T002 → T003 → T004 → T005)
+4. **STOP and VALIDATE**: Test US1 independently — Bottom Sheet appears, shows correct data, navigates to cart.
+5. Deploy/demo as MVP.
+
+### Incremental Delivery
+
+1. Setup → Foundation ready (immediate)
+2. Add User Story 1 → Test independently → MVP ready!
+3. Add User Story 2 → Test scroll behavior → Deploy
+4. Add User Story 3 → Test animations → Deploy
+5. Polish & validate → Final release
+
+### Single Developer Strategy
+
+1. Execute T001 (build check)
+2. Execute T002 (create component)
+3. Execute T003 (integrate into MenuPage)
+4. Execute T004 (click behavior), T005 (scope check) — quick follow-ups
+5. Execute T006 (dynamic padding — US2) and T007 + T008 (animation — US3)
+6. Final validation with T009, T010, T011
+
+---
+
+## Notes
+
+- **[P]** tasks = different files, no dependencies on incomplete tasks
+- **[Story]** label maps task to specific user story for traceability
+- Each user story should be independently completable and testable
+- CartContext (`src/context/CartContext.tsx`) is NOT modified — Bottom Sheet is read-only consumer
+- `formatCurrency` from `src/utils/pricing.ts` is reused for total formatting
+- Safe-area-inset-bottom via Tailwind arbitrary value: `pb-[env(safe-area-inset-bottom)]`
+- Commit after each task or logical group
+- Stop at any checkpoint to validate story independently
