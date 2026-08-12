@@ -33,7 +33,7 @@
 
 ## Phase 2: Foundational (Blocking Prerequisites)
 
-**Purpose**: Nenhuma — o CartContext (`src/context/CartContext.tsx`) já existe e provê `itemCount`, `total` e `useCart()`. O projeto já está inicializado com React 18 + Vite 5 + Tailwind 3 + React Router 6. Nenhuma infraestrutura adicional é necessária.
+**Purpose**: Nenhuma — o CartContext (`src/context/CartContext.tsx`) já existe e provê `itemCount`, `total` e `useCart()`. O projeto já está inicializado com React 19 + Vite 6 + Tailwind 4 + React Router 7. Nenhuma infraestrutura adicional é necessária.
 
 **⚠️ NOTA**: Esta fase está intencionalmente vazia. Todas as dependências para as user stories já estão satisfeitas. Prosseguir diretamente para Phase 3.
 
@@ -184,3 +184,81 @@ Task: "T003 [US1] Integrate CartBottomSheet into src/pages/MenuPage.tsx"
 - Safe-area-inset-bottom via Tailwind arbitrary value: `pb-[env(safe-area-inset-bottom)]`
 - Commit after each task or logical group
 - Stop at any checkpoint to validate story independently
+
+---
+
+## Code Review — Ciclo 1 (PR #6)
+
+Tasks de correção adicionadas pelo Code Review Agent em 2026-08-12. Não remover nem alterar tasks concluídas acima.
+
+- [X] CR-001 Tornar o card do Bottom Sheet acessível por teclado/leitor de tela e respeitar `prefers-reduced-motion`
+
+Contexto:
+FR-006 exige que o card inteiro do Bottom Sheet seja clicável. Em `src/components/CartBottomSheet.tsx:61-79`, o card é uma `<div>` com `onClick={goToCart}` e `cursor-pointer`, contendo um `<button>` real ("Ver Carrinho").
+
+Problema:
+A div clicável não possui `role="button"`, `tabIndex` ou manipulador de teclado (Enter/Espaço) — usuários de teclado/leitores de tela não conseguem acionar o card, apenas o botão interno. Há ainda aninhamento de elementos interativos (div clicável contendo botão) e a animação de 300ms não respeita `prefers-reduced-motion` (variante `motion-reduce` do Tailwind). Contradiz a alegação de auditoria a11y feita no comentário do PR.
+
+Critério de aceite:
+
+- Card acionável por teclado (Enter/Espaço) OU reestruturado como um único elemento interativo (`<button>`/`<Link>`) sem aninhamento de interativos
+- Sem duplicação de tab stops para a mesma ação (card + botão)
+- Animações de entrada/saída respeitam `prefers-reduced-motion` (variante `motion-reduce` ou media query)
+
+Prioridade:
+Medium
+
+---
+
+- [X] CR-002 Adicionar testes do `CartBottomSheet` (render, saída e navegação)
+
+Contexto:
+`src/components/CartBottomSheet.tsx` contém a máquina de estados `entering`/`exiting` (double rAF na entrada, transição `itemCount` → 0, fallback `setTimeout(EXIT_MS + 100)` e `onExitComplete`) — a lógica mais propensa a regressão da feature. O projeto já possui vitest configurado (`src/utils/orderHistory.test.ts`, 9 testes, adicionado no NAD-6 CR-004).
+
+Problema:
+Nenhum teste cobre o novo componente. Regressões na animação de saída, no fallback de unmount ou na navegação para `/carrinho` passariam despercebidas.
+
+Critério de aceite:
+
+- Render com `itemCount > 0` exibe plural correto ("1 item" / "N itens") e total formatado via `formatCurrency`
+- Transição `itemCount` 1 → 0 dispara `onExitComplete` (via transitionend ou fallback)
+- Clique no card e no botão navegam para `/carrinho`
+- `npm run test` passa com os novos testes
+
+Prioridade:
+Medium
+
+---
+
+- [X] CR-003 Corrigir drift de stack técnica no `plan.md` e `AGENTS.md`
+
+Contexto:
+O `plan.md` (Technical Context) declara "React 18, React Router 6, Tailwind CSS 3, Vite 5"; `AGENTS.md` (tabela Tech Stack) idem. O `package.json` real é `react ^19.1.0`, `react-router-dom ^7.6.1`, `tailwindcss ^4.1.6`, `vite ^6.3.4`. O Engenheiro sinalizou a divergência no comentário do PR, mas não corrigiu os documentos.
+
+Problema:
+Drift documental — specs e planos futuros serão gerados com stack desatualizada, e validações técnicas (ex.: `ref` como prop, Tailwind 4) podem ser avaliadas contra a stack errada.
+
+Critério de aceite:
+
+- `specs/007-bottom-sheet-carrinho/plan.md` (Technical Context) com as versões reais
+- `AGENTS.md` (tabela Tech Stack) atualizado com React 19 / RR 7 / Tailwind 4 / Vite 6
+
+Prioridade:
+Low
+
+---
+
+- [X] CR-004 Congelar os últimos valores durante a animação de saída do Bottom Sheet
+
+Contexto:
+Durante a saída (`itemCount` 1 → 0), o componente continua recebendo `itemCount = 0` e `total = 0` do contexto (`src/components/CartBottomSheet.tsx:67-71`), exibindo "0 itens" e "R$ 0,00" enquanto desliza para baixo (~300ms).
+
+Problema:
+Polimento visual — o usuário vê valores zerados durante a transição de saída, o que pode parecer bug de estado.
+
+Critério de aceite:
+
+- Durante o `exiting`, o sheet exibe os últimos valores (ou oculta os textos) até o unmount
+
+Prioridade:
+Low
