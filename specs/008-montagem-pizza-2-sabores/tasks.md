@@ -106,7 +106,7 @@ description: "Task list for feature implementation — NAD-8"
 
 **Purpose**: Validações finais exigidas pelo contrato do pipeline (auditorias internas obrigatórias).
 
-- [ ] T013 [P] Rodar auditorias internas obrigatórias no diff da feature: `security-auditor` (OWASP — sem XSS/injection em `ThirdFlavorModal` e `FlavorSelector`; sem dados sensíveis; sem `dangerouslySetInnerHTML`), `a11y-ux-auditor` (modal com foco/teclado, `aria-*`, contraste, labels claras, mobile-first 320px+), `perf-auditor` (sem re-render desnecessário, rolagem < 1s, sem dependências novas)
+- [x] T013 [P] Rodar auditorias internas obrigatórias no diff da feature: `security-auditor` (OWASP — sem XSS/injection em `ThirdFlavorModal` e `FlavorSelector`; sem dados sensíveis; sem `dangerouslySetInnerHTML`), `a11y-ux-auditor` (modal com foco/teclado, `aria-*`, contraste, labels claras, mobile-first 320px+), `perf-auditor` (sem re-render desnecessário, rolagem < 1s, sem dependências novas)
 - [x] T014 Rodar validação final do quickstart.md: `npm run test` e `npm run build` passando (SC-006)
 
 ---
