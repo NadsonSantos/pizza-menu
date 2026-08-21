@@ -134,3 +134,24 @@ Nenhuma task fundacional — feature 100% de dados estáticos, sem infraestrutur
 - **Não tocar**: `src/`, preços, `categorias`, `pizzaria`, `bebidas`, e os campos `id`/`nome`/`categoria_id`/`imagem` dos sabores.
 - Commit após cada task ou grupo lógico (T001–T009 → um único commit de implementação ao final, com mensagem `feat(NAD-9)`).
 - Stop em qualquer checkpoint para validar a story independentemente.
+---
+
+## Code Review — Ciclo 1 (PR #8)
+
+- [X] CR-001 Sincronizar a branch `009-atualizar-ingredientes-sabores` com a `main` e resolver o conflito de merge do PR #8
+
+Contexto:
+A `main` avançou após a criação da branch: o PR #7 (NAD-8) foi mergeado no commit `5b6305e` e alterou os mesmos 2 arquivos de bookkeeping do spec-kit que a branch 009 também alterou: `AGENTS.md` (bloco `<!-- SPECKIT START -->`, linhas Current plan/Previous plan) e `.specify/feature.json` (campo `feature_directory`). O GitHub reporta o PR #8 como `mergeable: CONFLICTING` / `mergeStateStatus: DIRTY`.
+
+Problema:
+O PR #8 não pode ser mergeado no estado atual — o merge na `main` (gate final do pipeline) falharia. `public/menu.json` não conflita (NAD-8 não o alterou); o conflito restringe-se aos 2 arquivos de bookkeeping do spec-kit.
+
+Critério de aceite:
+
+- `git merge origin/main` (ou rebase) na branch `009-atualizar-ingredientes-sabores` resolvido sem conflitos
+- `.specify/feature.json` → `"feature_directory": "specs/009-atualizar-ingredientes-sabores"`; bloco SPECKIT de `AGENTS.md` → Current plan `009-atualizar-ingredientes-sabores`, Previous plan `008-montagem-pizza-2-sabores`
+- GitHub reporta o PR #8 como mergeable (sem `CONFLICTING`)
+- Nenhuma alteração adicional em `public/menu.json` ou `src/` além das já revisadas (SC-001 a SC-004 seguem válidos)
+
+Prioridade:
+High
