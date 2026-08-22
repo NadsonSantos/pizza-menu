@@ -84,34 +84,39 @@ Implementation plan: `.hermes/plans/2025-07-28_195900-mvp-cardapio-pizzaria.md`
 
 ## Pipeline SDD Autônomo (contrato de handoff entre agentes Multica)
 
-Agentes do workspace Nadson-Work: **Product Owner** (orquestrador), **Front-End Engineer (React + Tailwind CSS)** (implementador), **Code Review Agent** (quality gate). Fluxo obrigatório:
+Agentes do workspace Nadson-Work: **Product Owner** (orquestrador), **Front-End Engineer (React + Tailwind CSS)** (implementador), **Code Review Agent** (quality gate).
 
-1. Usuário descreve necessidade → **PO** cria a issue no repositório.
-2. **PO** roda `/spec` (speckit specify), gera `specs/<NNN>-<nome>/spec.md`, comenta na issue mencionando o usuário e **aguarda aprovação** (aprovado / aprovado com ressalvas / ajuste).
+O workflow usa **SUB-ISSUES**: a **Issue MÃE** representa a demanda e permanece **atribuída ao PO**, em `in_progress`, até o workflow inteiro terminar. Atividades de agentes (implementação, code review, correções) acontecem em **sub-issues próprias**.
+
+1. Usuário descreve necessidade → **PO** cria a **Issue MÃE** no projeto, atribuída a ele, status `in_progress`.
+2. **PO** roda `/spec` (speckit specify), gera `specs/<NNN>-<nome>/spec.md`, comenta na mãe mencionando o usuário e **aguarda aprovação** (aprovado / aprovado com ressalvas / ajuste).
 3. Aprovado → **PO** roda `/plan` (speckit plan), cria a **branch da issue**, gera os artefatos de plano, comenta mencionando o usuário e **aguarda aprovação**. Ajuste → PO revisa e comenta novamente.
-4. Aprovado → **PO menciona o Engenheiro** na issue para implementar as tasks do plano na branch criada.
-5. **Engenheiro** implementa na branch, roda auditorias internas (`security-auditor` OWASP, `a11y-ux-auditor`, `test-writer`, `perf-auditor`), push e **abre/atualiza PR**.
+4. Aprovado → **PO cria uma sub-issue de implementação** (`--parent <mãe>`, status `todo`) **atribuída ao Engenheiro**, com contexto completo (branch + spec/plan/tasks), e o menciona para acionar. A mãe permanece `in_progress`.
+5. **Engenheiro** trabalha **exclusivamente na sub-issue atribuída** e na branch da issue; roda auditorias internas (`security-auditor`, `a11y-ux-auditor`, `test-writer`, `perf-auditor`), push e **abre/atualiza PR**. **NÃO faz merge**.
    - Inconsistência real no `/plan` → Engenheiro **não força**: menciona o PO para ajustar o plano (volta ao passo 3).
-6. Engenheiro conclui → **menciona o Code Reviewer no PR**.
-7. **Code Reviewer** revisa via PR: qualidade, testes, **e auditorias de segurança (OWASP) e UX/UI/a11y** — não aprova por estilo.
+6. **PO cria sub-issue de revisão** (`--parent <mãe>`, `todo`) **atribuída ao Code Reviewer** e o menciona (com URL do PR).
+7. **Code Reviewer** revisa via PR: qualidade, testes, **e auditorias (OWASP) e UX/UI/a11y** — não aprova por estilo.
    - Reprovou → menciona o Engenheiro com tasks de correção; Engenheiro corrige e volta ao passo 6.
    - **3ª rejeição no mesmo ciclo** → CR **escalona para o usuário** (resumo dos motivos) e aguarda decisão.
-   - Aprovou → **menciona o PO**.
+   - Aprovou → **menciona o PO**. **NÃO faz merge.**
 8. **PO** valida a implementação final contra a spec original.
-   - Reprovou → menciona o Engenheiro com ajustes (volta ao passo 6).
-   - Aprovou → **merge na `main`**, **fecha a issue**, e **menciona o usuário** com a conclusão (PR/commit mergeado).
+   - Reprovou → cria/atualiza **sub-issue de correção** para o Engenheiro (volta ao passo 6).
+   - Aprovou → **o workflow PARA e aguarda AUTORIZAÇÃO EXPLÍCITA do usuário para o merge**. **Não faz merge na `main` automaticamente.**
+9. **Após autorização explícita do usuário**: PO efetua o merge, **finaliza as sub-issues abertas** e, concluído tudo, **fecha a Issue MÃE**, mencionando o usuário com a conclusão (PR/commit mergeado).
 
 ### Regras gerais
 
 - Cada agente **só age quando mencionado/acionado**; nunca pula etapa nem avança sem aprovação humana nos gates (fim do /spec e fim do /plan).
+- **Nenhum merge automático na `main`** — o merge só ocorre após o usuário pedir explicitamente, mesmo com PR aprovado e testes passando.
+- **A Issue MÃE permanece no PO e `in_progress`** enquanto houver etapas; só é concluída quando o workflow inteiro termina (após merge autorizado e sub-issues finalizadas).
 - Todo handoff via comentário na issue/PR mencionando o responsável pelo próximo passo, registrando: quem acionou, quando, resultado (aprovado/rejeitado + motivo).
 - Cada agente atualiza o status da issue/task antes de passar adiante.
 - Loop Engenheiro ⇄ Code Reviewer autocontido até **3 rejeições**; a partir daí escala para o usuário.
-- Usuário só é mencionado nos pontos de decisão: aprovação de spec, aprovação de plano, escalonamento por rejeições repetidas e conclusão final.
+- Usuário só é mencionado nos pontos de decisão: aprovação de spec, aprovação de plano, **autorização de merge**, escalonamento por rejeições repetidas e conclusão final.
 - Toda implementação em **branch própria da issue**; Code Reviewer revisa **via PR**, nunca código solto.
-- **Não há timeout automático**: pipeline pausado aguardando aprovação humana é comportamento esperado, não falha.
+- **Não há timeout automático**: pipeline pausado aguardando aprovação/autorização humana é comportamento esperado, não falha.
 - Somente o **PO** comunica o usuário diretamente; o Code Reviewer só o menciona no escalonamento.
-- Encerramento da SPEC só é completo após: aprovação final do PO + merge na main + fechamento da issue.
+- Encerramento da Issue MÃE só é completo após: aprovação final do PO + **merge autorizado pelo usuário** + fechamento das sub-issues + fechamento da mãe.
 - Menções em comentários: `[@Nome](mention://agent/<uuid>)` (texto puro `@Nome` não dispara).
 
 
