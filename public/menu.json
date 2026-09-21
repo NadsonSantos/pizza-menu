@@ -1,7 +1,7 @@
 {
   "pizzaria": {
     "nome": "Rê Pizza's",
-    "whatsapp": "5511999999999",
+    "whatsapp": "+5571982340229",
     "taxa_entrega": 5.00
   },
   "categorias": [
@@ -46,9 +46,6 @@
     { "id": "quatro-queijos", "nome": "4 Queijos", "descricao": "mussarela, provolone, catupiry e queijo parmesão", "imagem": "", "categoria_id": "sensacionais" }
   ],
   "bebidas": [
-    { "id": "pepsi", "nome": "Pepsi Lata 350ml", "preco": 8.00, "imagem": "" },
-    { "id": "guarana", "nome": "Guaraná Antarctica Lata 350ml", "preco": 7.50, "imagem": "" },
-    { "id": "coca-cola", "nome": "Coca-Cola Lata 350ml", "preco": 8.50, "imagem": "" },
-    { "id": "agua", "nome": "Água Mineral 500ml", "preco": 4.00, "imagem": "" }
+    { "id": "pepsi", "nome": "Pepsi 1 litro", "preco": 6.00, "imagem": "" }
   ]
 }
